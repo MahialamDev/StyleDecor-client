@@ -4,6 +4,7 @@ import Logo from '../../UI/Logo/Logo';
 import { ShoppingCart, User } from 'lucide-react';
 import { CgMenuRightAlt } from 'react-icons/cg';
 import { RxCross2 } from 'react-icons/rx';
+import { Link } from 'react-router';
 
 const Navbar = () => {
     const links =
@@ -61,7 +62,9 @@ const Navbar = () => {
   </span>
 </div>
 
+            <Link className='flex gap-2 items-end' to='/login'>
                     <User /> <span className='hidden md:inline-block '>Sign In</span>
+            </Link>
                </div>
                 
             </div>
