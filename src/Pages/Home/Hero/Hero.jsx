@@ -75,7 +75,7 @@ const Hero = () => {
 
     <div className="flex items-center gap-4 mt-6">
       <button className="btn btn-primary">View More</button>
-      <button className="btn btn-outline text-primary border-primary flex items-center gap-2">
+      <button className="btn btn-outline text-secondary border-secondary flex items-center gap-2">
         <CiSearch size={18} /> Explore
       </button>
     </div>

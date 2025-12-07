@@ -81,12 +81,13 @@ const Navbar = () => {
             </span>
           </div>
 
+          {/* USer Profile Img */}
           {loading ? (
             <PuffLoader color="#69C5D3" size={20} />
           ) : user ? (
             <div className="dropdown dropdown-bottom dropdown-end">
               <div tabIndex={0} role="button" className="m-1 cursor-pointer">
-                <div className="w-8 h-8 border-2 border-primary rounded-full">
+                <div className="w-8 h-8 border-2 border-primary rounded-full flex items-center justify-center overflow-hidden">
                   <img
                     className="mx-auto object-cover rounded-full"
                     src={user?.photoURL}
@@ -99,7 +100,7 @@ const Navbar = () => {
                 tabIndex="-1"
                 className="dropdown-content border border-primary menu bg-base-100 rounded-box z-1 w-52 p-4 shadow-sm"
               >
-                <div className="w-10 h-10 border-2 border-primary rounded-full mx-auto">
+                <div className="w-10 h-10 border-2 border-primary rounded-full mx-auto flex items-center justify-center overflow-hidden">
                   <img
                     className="mx-auto object-cover rounded-full"
                     src={user?.photoURL}

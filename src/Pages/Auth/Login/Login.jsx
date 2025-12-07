@@ -1,9 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import AuthContext from '../../../Context/AuthContext';
+import useAuth from '../../../Hooks/useAuth';
 
 const Login = () => {
+    const { user } = useAuth();
+
+
+    if (user) {
+        return <Navigate to='/' />
+    }
 
     return (
         <div className='mb-5 pb-5 md:pb-0 md:m-0' >
