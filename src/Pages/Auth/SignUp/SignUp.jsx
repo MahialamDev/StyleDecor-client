@@ -69,6 +69,8 @@ const SignUp = () => {
               })
               .catch();
           })
+            
+            
           .catch((err) => toast(err.message));
       })
       .catch((err) => {

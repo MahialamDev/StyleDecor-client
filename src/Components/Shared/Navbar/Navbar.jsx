@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, loading, logOutUser } = useAuth();
-  console.log(user);
   const links = (
     <>
       <li>
