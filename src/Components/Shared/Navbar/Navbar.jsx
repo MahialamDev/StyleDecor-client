@@ -7,7 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { PuffLoader } from "react-spinners";
-import PrimaryBtn from "../../UI/primaryBtn/primaryBtn";
+import PrimaryBtn from "../../UI/PrimaryBtn/primaryBtn";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
@@ -18,7 +18,7 @@ const Navbar = () => {
         <MyLink to="/">Home</MyLink>
       </li>
       <li>
-        <MyLink to="/all-services">All Services</MyLink>
+        <MyLink to="/services">Services</MyLink>
       </li>
     </>
   );

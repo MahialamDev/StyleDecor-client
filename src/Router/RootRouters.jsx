@@ -7,6 +7,7 @@ import AuthLayout from '../Layouts/AuthLayout';
 import SignUp from '../Pages/Auth/SignUp/SignUp';
 import Test from '../Test/Test';
 import ScreenLoading from '../Components/Animation/ScreenLoading/ScreenLoading';
+import Services from '../Pages/Services/Services';
 
 
 
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: 'test',
                 Component: Test
+            },
+            {
+                path: 'services',
+                Component: Services
             }
         ]
     },
