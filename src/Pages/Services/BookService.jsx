@@ -32,13 +32,15 @@ const BookService = () => {
         );
     }
 
+    
+
 
     const handleBookNow = (data) => {
         const bookingInfo = {
             client_name: user.name,
             client_email: user.email,
             client_number: data.client_number || 'N/A',
-            serviceId: service.service_id,
+            serviceId: service._id,
             service_name: service.service_name,
             service_category: data.service_category,
             booking_cost: data.service_cost,

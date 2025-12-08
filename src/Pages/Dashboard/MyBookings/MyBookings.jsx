@@ -18,6 +18,28 @@ const MyBookings = () => {
     },
   });
 
+
+  const handlePayment = (id, booking_id) => {
+    const paymentInfo = {
+      serviceId: id,
+      email: user.email,
+      booking_id: booking_id
+    }
+    axiosSecure.post('/create-checkout-session', paymentInfo)
+      .then(res => {
+        window.location.assign(res.data.url)
+      })
+      .catch(err=> console.log(err))
+  }
+
+  console.log(myBookings)
+
+
+
+
+
+
+
   if (isLoading) {
     return <ScreenLoading />;
   }
@@ -91,7 +113,7 @@ const MyBookings = () => {
                       <CheckCircle size={16} /> Paid
                     </span>
                   ) : (
-                    <button className="flex gap-1 transition duration-300 py-1.5 md:py-2 px-2 md:px-4 rounded-sm border-2 border-primary text-sm hover:bg-primary bg-transparent hover:text-base-200 cursor-pointer ">
+                    <button onClick={()=>handlePayment(booking.serviceId, booking._id)} className="flex gap-1 transition duration-300 py-1.5 md:py-2 px-2 md:px-4 rounded-sm border-2 border-primary text-sm hover:bg-primary bg-transparent hover:text-base-200 cursor-pointer ">
                       {" "}
                       <HandCoins size={18} /> Pay Now{" "}
                     </button>
