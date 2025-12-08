@@ -74,7 +74,7 @@ const Navbar = () => {
 
         <div className="flex gap-5 items-center">
           <div className="relative">
-            <ShoppingCart className="text-2xl" />
+           <Link to='/dashboard/my-bookings'> <ShoppingCart className="text-2xl" /></Link>
             <span className="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center bg-primary text-white text-xs rounded-full border border-white">
               0
             </span>

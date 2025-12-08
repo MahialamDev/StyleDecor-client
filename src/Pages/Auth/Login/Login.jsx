@@ -1,16 +1,20 @@
-import React from 'react';
-import { Link, Navigate } from 'react-router';
+import React, { useEffect } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import AuthContext from '../../../Context/AuthContext';
 import useAuth from '../../../Hooks/useAuth';
 
 const Login = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
 
-    if (user) {
-        return <Navigate to='/' />
-    }
+    useEffect(() => {
+        if (user) {
+            navigate(location?.state?.from?.pathname || "/", { replace: true });
+        }
+    }, [user]);
 
     return (
         <div className='mb-5 pb-5 md:pb-0 md:m-0' >

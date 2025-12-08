@@ -2,16 +2,19 @@ import React from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useLocation, useNavigate } from "react-router";
 
 const SocialLogin = () => {
   const { loginWithGoogle} = useAuth();
     const axiosSecure = useAxiosSecure();
-
+    const navigate = useNavigate();
+    const location = useLocation();
     const handleGoogleLogin = () => {
       
         // Google Login
     loginWithGoogle()
-        .then((res) => {
+      .then((res) => {
+        navigate(location?.state?.from?.pathname || "/")
         // Store user info in database
         const userInfoDatabase = {
           name: res.user.displayName,

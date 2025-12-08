@@ -1,22 +1,22 @@
 import React from 'react';
 import useAuth from '../Hooks/useAuth';
 import ScreenLoading from '../Components/Animation/ScreenLoading/ScreenLoading';
-import { useNavigate } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
+
 
 const PrivateRouter = ({children}) => {
     const { user, loading } = useAuth();
-    const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location)
     if (loading) {
         return <ScreenLoading />
     }
 
     if (!user) {
-        navigate('/login')
+        return <Navigate to='/login' state={{from: location}} replace />
     }
 
-    if (user && user.email) {
-        return children;
-    }
+    return children;
 };
 
 export default PrivateRouter;
