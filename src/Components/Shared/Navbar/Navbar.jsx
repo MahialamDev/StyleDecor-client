@@ -24,6 +24,9 @@ const Navbar = () => {
       <li>
         <MyLink to="/services">Services</MyLink>
       </li>
+      <li>
+        <MyLink to="/about">About</MyLink>
+      </li>
     </>
   );
 

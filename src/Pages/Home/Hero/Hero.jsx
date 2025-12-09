@@ -9,9 +9,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { CiHome, CiSearch } from "react-icons/ci";
+import { useNavigate } from "react-router";
 
 const Hero = () => {
   const banners = [banner1img, banner2img, banner3img];
+  const navigate = useNavigate();
   return (
     <section className="w-full px-2 md:px-6 max-w-7xl mx-auto h-screen overflow-hidden flex flex-col">
           <div className="h-full md:h-auto rounded-2xl ">
@@ -55,7 +57,7 @@ const Hero = () => {
         vero ab id nulla consequuntur atque.
       </p>
 
-      <button className="btn btn-primary mt-6">View More</button>
+      <button onClick={()=> navigate('/services')} className="btn btn-primary mt-6">Book Decoration Service</button>
     </div>
           </div>
           
@@ -94,7 +96,7 @@ const Hero = () => {
     </p>
 
     <div className="flex items-center gap-4 mt-6">
-      <button className="btn btn-primary">View More</button>
+      <button onClick={()=> navigate('/services')} className="btn btn-primary">Book Decoration Service</button>
       <button className="btn btn-outline text-secondary border-secondary flex items-center gap-2">
         <CiSearch size={18} /> Explore
       </button>

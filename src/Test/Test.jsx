@@ -1,11 +1,13 @@
 import React from 'react';
-import ErrorPage from '../Components/Animation/ErrorPage/ErrorPage';
-import ScreenLoading from '../Components/Animation/ScreenLoading/ScreenLoading';
+import DecoratorApplications from '../Pages/DecoratorApplications/DecoratorApplications';
+
+
 
 const Test = () => {
     return (
         <>
-            <ScreenLoading ></ScreenLoading>
+            ok
+            <DecoratorApplications></DecoratorApplications>
         </>
     );
 };

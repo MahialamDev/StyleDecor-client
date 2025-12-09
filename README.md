@@ -1,16 +1,112 @@
-# React + Vite
+### StyleDecor 🎨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern appointment & service management system for local decoration businesses.
+Live URL: https://styledecor-2025.web.app/
 
-Currently, two official plugins are available:
+### 🚀 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+StyleDecor helps users easily book decoration services, schedule studio consultations, check decorator availability, and track service progress with online payments.
 
-## React Compiler
+*🎯 Purpose*
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Traditional local decorators face issues like:
 
-## Expanding the ESLint configuration
+Walk-in crowd & long waiting times
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+No online booking system
+
+Hard to manage multiple decorators & their specialties
+
+No proper workflow for on-site decoration services
+
+StyleDecor solves these with a complete digital solution.
+
+## ⭐ Key Features
+## 🎟 User Features
+
+Browse decoration packages
+
+Book consultation or on-site services
+
+Check date & time availability
+
+Choose service mode (Studio / Home / Event Venue)
+
+Online payment (Stripe)
+
+Track service status in real-time
+
+User dashboard (bookings, payments, history)
+
+🛠 Admin & Business Features
+
+Manage users & decorators
+
+Set or update decorator availability
+
+Assign decorators to on-site projects
+
+Approve / decline bookings
+
+Payment management
+
+Analytics dashboard
+
+Service management (add/update/delete packages)
+
+🧩 Technologies & NPM Packages
+🖥 Frontend
+
+React 19
+
+Vite
+
+TailwindCSS + DaisyUI
+
+React Router v7
+
+React Hook Form
+
+TanStack React Query
+
+Axios
+
+Firebase Authentication & Hosting
+
+Lottie React
+
+Lucide React Icons
+
+SweetAlert2
+
+React Toastify
+
+React Spinners
+
+Swiper.js
+
+Motion Animation
+
+📦 All Dependencies (from package.json)
+@tailwindcss/vite
+@tanstack/react-query
+axios
+firebase
+lottie-react
+lucide-react
+motion
+react
+react-dom
+react-hook-form
+react-icons
+react-router
+react-spinners
+react-toastify
+stripe
+sweetalert2
+swiper
+tailwindcss
+
+🧑‍💻 Developer
+
+Mahialam Rahat

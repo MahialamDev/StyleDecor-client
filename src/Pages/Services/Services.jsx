@@ -34,7 +34,7 @@ const Services = () => {
                     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-5 mt-10'>
                         {
                             services.map(service => 
-                                <div className='border border-primary p-2 rounded-md space-y-1.5 md:space-y-2 flex flex-col h-full shadow-md bg-base-200' key={service._id}>
+                                <div className='border border-primary/40 p-2 md:p-4 rounded-md space-y-1.5 md:space-y-2 flex flex-col h-full shadow-md bg-base-200' key={service._id}>
                                     {/* Image */}
                                     <div className=' h-[180px] md:h-[200px] overflow-hidden'>
                                         <img className='w-full h-full object-cover rounded-md' src={service?.images[0].url} alt={service?.images[0].alt} />

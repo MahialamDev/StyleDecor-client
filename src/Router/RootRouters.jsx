@@ -16,6 +16,7 @@ import MyBookings from '../Pages/Dashboard/MyBookings/MyBookings';
 import PaymentSuccess from '../Pages/Dashboard/Payments/PaymentSuccess';
 import UsersManagement from '../Pages/Dashboard/UsersManagement/UsersManagement';
 import MyProfile from '../Pages/Dashboard/MyProfile/MyProfile';
+import About from '../Pages/About/About';
 
 
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: 'test',
                 Component: Test
+            },
+            {
+                path: 'about',
+                Component: About
             },
             {
                 path: 'services',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Logo from '../../UI/Logo/Logo';
-import { IoCallOutline, IoLocationOutline } from 'react-icons/io5';
+import { IoCallOutline, IoLocationOutline, IoTimeOutline } from 'react-icons/io5';
 import { MdOutlineEmail } from 'react-icons/md';
 import { SiFacebook, SiInstagram, SiLinkedin, SiX } from 'react-icons/si';
 
@@ -46,19 +46,26 @@ const Footer = () => {
                 </div>
                 {/* Grid 4 */}
                 <div>
-                    <h1 className='font-semibold text-xl mb-5  text-base-content'>Get in Touch</h1>
-                    <div className='flex flex-col gap-4 '>
-                        <span className='flex items-end gap-4'>
-                        <IoLocationOutline className='text-primary text-xl' />Jamalpur, Bangladesh
-                    </span>
-                    <a href="tel:+8801979922268" className='flex items-end gap-4'>
-                        <IoCallOutline className='text-primary text-xl' />+880 1979-922268
-                    </a>
-                    <a href="mailto:mahialam408@gmail.com" className='flex items-end gap-4'>
-                        <MdOutlineEmail className='text-primary text-xl' /> support@smart-decor.com
-                    </a>
-                    </div>
+  <h1 className='font-semibold text-xl mb-5 text-base-content'>Get in Touch</h1>
+  <div className='flex flex-col gap-4'>
+    <span className='flex items-end gap-4'>
+      <IoLocationOutline className='text-primary text-xl' />Jamalpur, Bangladesh
+                        </span>
+                        <span className='flex items-center gap-4 text-gray-600'>
+        <IoTimeOutline className='text-primary text-xl' /> Monday - Friday: 9:00 AM - 6:00 PM
+      </span>
+    <a href="tel:+8801979922268" className='flex items-end gap-4'>
+      <IoCallOutline className='text-primary text-xl' />+880 1979-922268
+    </a>
+    <a href="mailto:mahialam408@gmail.com" className='flex items-end gap-4'>
+      <MdOutlineEmail className='text-primary text-xl' /> support@smart-decor.com
+    </a>
+
+  </div>
                 </div>
+                
+                
+
 
             </div>
             <div className='w-full p-5 md:px-20 bg-black md:flex justify-between space-y-2 text-center text-white'>

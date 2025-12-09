@@ -23,12 +23,12 @@ const PaymentSuccess = () => {
   }, [axiosSecure, sessionId]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 md:px-4">
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="bg-white shadow-xl rounded-2xl max-w-md w-full p-6 flex flex-col items-center text-center border-t-8 border-primary"
+        className="bg-white shadow-xl rounded-2xl max-w-md w-full p-4 md:p-6 flex flex-col items-center text-center border-t-8 border-primary"
       >
         {/* Success Icon */}
         <CheckCircle className="text-primary w-16 h-16 mb-4" />
