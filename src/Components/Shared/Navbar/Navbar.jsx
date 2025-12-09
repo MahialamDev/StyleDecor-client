@@ -9,6 +9,7 @@ import useAuth from "../../../Hooks/useAuth";
 import { PuffLoader } from "react-spinners";
 import PrimaryBtn from "../../UI/PrimaryBtn/primaryBtn";
 import { toast } from "react-toastify";
+import { AnimatePresence, motion } from "motion/react";
 
 const Navbar = () => {
   const { user, loading, logOutUser } = useAuth();
@@ -26,12 +27,12 @@ const Navbar = () => {
   const handleSignOut = () => {
     logOutUser()
       .then(() => {
-      toast.warning("Sign Out Succfully!")
+        toast.warning("Sign Out Succfully!");
       })
-      .catch(err => {
-      toast.error(err.message)
-    })
-  }
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
 
   const [open, setOpen] = useState(false);
 
@@ -50,14 +51,27 @@ const Navbar = () => {
         <nav className="hidden md:flex items-center">
           <ul className="flex items-center gap-10">{links}</ul>
         </nav>
-
+<AnimatePresence>
         {/* Navlinks Mobile */}
         {open && (
           <nav
             onClick={() => setOpen(false)}
             className="md:hidden fixed inset-0 z-50 h-screen w-full bg-black/40 backdrop-blur-xl"
           >
-            <div
+            <motion.div
+              initial={{
+                x: -200, opacity:0
+              }}
+              animate={{
+                x: 0, opacity:1
+              }}
+              exit={{
+                x: -200, opacity: 0
+              }}      // exit animation
+              transition={{
+                duration: 0.3,
+                ease: "easeOut",
+              }}
               onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside sidebar
               className="bg-white h-full w-[80%] p-4"
             >
@@ -68,13 +82,21 @@ const Navbar = () => {
                 <RxCross2 /> Close
               </p>
               <ul className="flex flex-col gap-5 w-full h-full">{links}</ul>
-            </div>
+            </motion.div>
           </nav>
-        )}
+          )}
+
+          </AnimatePresence>
+          
+
+          {/* Icon */}
 
         <div className="flex gap-5 items-center">
           <div className="relative">
-           <Link to='/dashboard/my-bookings'> <ShoppingCart className="text-2xl" /></Link>
+            <Link to="/dashboard/my-bookings">
+              {" "}
+              <ShoppingCart className="text-2xl" />
+            </Link>
             <span className="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center bg-primary text-white text-xs rounded-full border border-white">
               0
             </span>
@@ -109,9 +131,15 @@ const Navbar = () => {
                 </div>
                 <p className="font-semibold text-primary text-center">
                   {user.displayName}
-                  </p>
-                  
-                  <PrimaryBtn onClick={handleSignOut} className='mt-2 flex gap-2 items-center justify-center text-base-100'> <LogOut size={18} /> Log Out</PrimaryBtn>
+                </p>
+
+                <PrimaryBtn
+                  onClick={handleSignOut}
+                  className="mt-2 flex gap-2 items-center justify-center text-base-100"
+                >
+                  {" "}
+                  <LogOut size={18} /> Log Out
+                </PrimaryBtn>
               </ul>
             </div>
           ) : (

@@ -10,7 +10,7 @@ import ScreenLoading from "../../../Components/Animation/ScreenLoading/ScreenLoa
 const MyBookings = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { data: myBookings = [], isLoading } = useQuery({
+  const { data: myBookings = [], isLoading, refetch } = useQuery({
     queryKey: ["my-bookings"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/my-bookings?email=${user.email}`);
@@ -35,6 +35,14 @@ const MyBookings = () => {
   console.log(myBookings)
 
 
+
+  // Cancel BOkking
+  const handleCancelBooking = (id) => {
+    axiosSecure.patch(`/cancel-booking?cancel_id=${id}`)
+      .then(() => {
+        refetch();
+    })
+  }
 
 
 
@@ -108,7 +116,7 @@ const MyBookings = () => {
 
                   {/* Payment */}
                 <td className="px-4 py-3">
-                  {booking.payment_status === "Paid" ? (
+                  {booking.payment_status === "paid" ? (
                     <span className="flex items-center gap-1 text-green-600 font-medium">
                       <CheckCircle size={16} /> Paid
                     </span>
@@ -124,22 +132,38 @@ const MyBookings = () => {
 
                 {/* Service Status */}
                 <td className="px-4 py-3">
-                  {booking.service_status ? (
-                    <span className="px-2 py-1 rounded-full text-white text-sm font-medium bg-green-500">
+                  {booking.service_status === 'cancelled' ? 
+                    <span className="px-4 py-1.5 rounded-full text-base-content text-sm font-medium bg-orange-200 capitalize">
                       {booking.service_status}
-                    </span>
-                  ) : (
-                    <span className="px-4 py-2 rounded-full text-white text-sm font-medium bg-gray-400">
+                    </span> 
+                    :
+                    
+                    booking.service_status ? 
+                    <span className="px-4 py-1.5 rounded-full text-white text-sm font-medium bg-green-500 capitalize">
+                      {booking.service_status}
+                    </span> 
+                   :
+                    
+                    
+                    <span className="px-4 py-1.5 rounded-full text-white text-sm font-medium bg-gray-400">
                       Pending
                     </span>
-                  )}
+                  }
                 </td>
 
                 {/* Actions */}
                 <td className="px-4 py-3">
-                  <button className="flex items-center gap-1 btn btn-sm btn-error text-base-200">
+
+                  {booking.service_status === 'cancelled' ?
+                    <span className="px-4 py-1.5 cursor-not-allowed rounded-full text-base-content text-sm font-medium bg-orange-200 capitalize">
+                      {booking.service_status}
+                    </span> :
+                    <button onClick={()=> handleCancelBooking(booking._id)} className="flex items-center gap-1 btn btn-sm btn-error      text-base-200">
                     <XCircle size={16} /> Cancel
-                  </button>
+                    </button>
+                  }
+
+                  
                 </td>
               </tr>
             ))}

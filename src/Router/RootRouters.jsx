@@ -13,6 +13,7 @@ import PrivateRouter from './PrivateRouter';
 import BookService from '../Pages/Services/BookService';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import MyBookings from '../Pages/Dashboard/MyBookings/MyBookings';
+import PaymentSuccess from '../Pages/Dashboard/Payments/PaymentSuccess';
 
 
 
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
             {
                 path: 'my-bookings',
                 element: <MyBookings />
+            },
+            {
+                path: 'payment-success',
+                Component: PaymentSuccess
             }
         ]
     }
