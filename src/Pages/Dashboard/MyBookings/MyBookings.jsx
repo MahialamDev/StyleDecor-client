@@ -6,6 +6,7 @@ import useAuth from "../../../Hooks/useAuth";
 import { Calendar, XCircle, CheckCircle, HandCoins } from "lucide-react";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import ScreenLoading from "../../../Components/Animation/ScreenLoading/ScreenLoading";
+import Swal from "sweetalert2";
 
 const MyBookings = () => {
   const { user } = useAuth();
@@ -38,10 +39,35 @@ const MyBookings = () => {
 
   // Cancel BOkking
   const handleCancelBooking = (id) => {
+
+
+    Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able booked this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, Cancel!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    
     axiosSecure.patch(`/cancel-booking?cancel_id=${id}`)
       .then(() => {
+        Swal.fire({
+      title: "Cancelled!",
+      text: "Your service has been cencelled.",
+      icon: "success"
+    });
         refetch();
-    })
+      })
+      .catch(err=> console.log(err))
+
+    
+  }
+});
+
+    
   }
 
 
@@ -53,7 +79,7 @@ const MyBookings = () => {
   }
 
   return (
-    <div className="p-4 md:p-8">
+    <div className=" md:p-8 ">
       <div className='w-full mb-9'>
                     <p className='text-center uppercase font-semibold text-gray-500 leading-snug'>My All</p>
         <h1 className='text-center text-4xl font-semibold'>Bookings ({myBookings.length})</h1>

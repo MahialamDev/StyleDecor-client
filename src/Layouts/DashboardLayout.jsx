@@ -1,4 +1,4 @@
-import { Handbag } from 'lucide-react';
+import { Handbag, Users } from 'lucide-react';
 import React from 'react';
 import { Link, Outlet } from 'react-router';
 
@@ -44,11 +44,21 @@ const DashboardLayout = () => {
           </button>
               </li>
               
+              {/* my booking */}
               <li>
           <Link to='/dashboard/my-bookings' className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Bookings">
             {/* Home icon */}
             <Handbag size={20} />
-            <span className="is-drawer-close:hidden">Homepage</span>
+            <span className="is-drawer-close:hidden">My Bookings</span>
+          </Link>
+              </li>
+              
+              {/* user managment */}
+              <li>
+          <Link to='/dashboard/users-mangement' className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="User Management">
+            {/* Home icon */}
+           <Users size={20} />
+            <span className="is-drawer-close:hidden">Users Managment</span>
           </Link>
         </li>
       </ul>

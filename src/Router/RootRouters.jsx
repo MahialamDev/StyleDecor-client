@@ -14,6 +14,7 @@ import BookService from '../Pages/Services/BookService';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import MyBookings from '../Pages/Dashboard/MyBookings/MyBookings';
 import PaymentSuccess from '../Pages/Dashboard/Payments/PaymentSuccess';
+import UsersManagement from '../Pages/Dashboard/UsersManagement/UsersManagement';
 
 
 
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             {
                 path: 'payment-success',
                 Component: PaymentSuccess
+            },
+            {
+                path: 'users-mangement',
+                Component: UsersManagement
             }
         ]
     }
