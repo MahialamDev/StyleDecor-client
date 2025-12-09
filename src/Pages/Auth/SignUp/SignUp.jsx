@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
@@ -11,7 +11,8 @@ const SignUp = () => {
   const { signUpUser, updateUserProfile, loading, setLoading } = useAuth();
   const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
-    const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const handleSignUp = (data) => {
     const email = data.email;
@@ -78,6 +79,10 @@ const SignUp = () => {
         toast(err.message);
       });
   };
+
+  if (user) {
+    return <Navigate to='/login'/>
+  }
 
   return (
     <div className="mb-5 pb-5 md:pb-0 md:m-0">

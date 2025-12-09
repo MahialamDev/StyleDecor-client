@@ -10,6 +10,7 @@
   --color-base-content: #000000; /* black */
    /* custom white color */
   --color-white: #ffffff;
+  --color-base-100: #EFF1F5;
   /* Optional for nicer look */
   --color-neutral: #EF2853; /* btn-neutral */
   --color-accent: #a3e635;  /* btn-accent */

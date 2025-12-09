@@ -1,4 +1,4 @@
-import { Handbag, Users } from 'lucide-react';
+import { Handbag, UserPen, Users } from 'lucide-react';
 import React from 'react';
 import { Link, Outlet } from 'react-router';
 
@@ -16,7 +16,7 @@ const DashboardLayout = () => {
       <div className="px-4">Navbar Title</div>
     </nav>
     {/* Page content here */}
-                <div className="p-4 border rounded-2xl h-full">
+                <div className="p-4 border border-gray-400/40 rounded-2xl h-full">
                     <Outlet />
                 </div>
   </div>
@@ -59,6 +59,14 @@ const DashboardLayout = () => {
             {/* Home icon */}
            <Users size={20} />
             <span className="is-drawer-close:hidden">Users Managment</span>
+          </Link>
+        </li>
+              {/* My Profile */}
+              <li>
+          <Link to='/dashboard/my-profile' className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile">
+            {/* Home icon */}
+           <UserPen size={20} />
+            <span className="is-drawer-close:hidden">My Profile</span>
           </Link>
         </li>
       </ul>

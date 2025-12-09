@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import MyLink from "../../UI/MyLink/MyLink";
 import Logo from "../../UI/Logo/Logo";
-import { LogOut, ShoppingCart, User } from "lucide-react";
+import { Edit, LogOut, ShoppingCart, User } from "lucide-react";
 import { CgMenuRightAlt } from "react-icons/cg";
 import { RxCross2 } from "react-icons/rx";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { PuffLoader } from "react-spinners";
 import PrimaryBtn from "../../UI/PrimaryBtn/primaryBtn";
 import { toast } from "react-toastify";
 import { AnimatePresence, motion } from "motion/react";
+import TransparentBtn from "../../UI/TransparentBtn/TransparentBtn";
+
 
 const Navbar = () => {
   const { user, loading, logOutUser } = useAuth();
+  const navigate = useNavigate();
   const links = (
     <>
       <li>
@@ -135,11 +138,15 @@ const Navbar = () => {
 
                 <PrimaryBtn
                   onClick={handleSignOut}
-                  className="mt-2 flex gap-2 items-center justify-center text-base-100"
+                  className="mt-2 flex gap-2 items-center justify-center text-base-100 mb-2"
                 >
                   {" "}
                   <LogOut size={18} /> Log Out
-                </PrimaryBtn>
+                  </PrimaryBtn>
+                  
+                  <TransparentBtn onClick={()=> navigate('/dashboard/my-profile')} className='flex items-center gap-2 justify-center'>
+                    <Edit size={18} /> View Profile
+                  </TransparentBtn>
               </ul>
             </div>
           ) : (

@@ -71,7 +71,7 @@ const Hero = () => {
         transition={{
           duration:0.8, ease: "easeOut"
         }}
-        className="flex-1 z-20 hidden md:flex items-center w-full justify-between  bg-white/70 rounded-xl ">
+        className="flex-1 z-20 hidden md:flex items-center w-full justify-between  bg-white/70 rounded-xl  p-4 md:p-6">
   {/* Left Side Text */}
         <motion.div
           initial={{

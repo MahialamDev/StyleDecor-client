@@ -15,6 +15,7 @@ import DashboardLayout from '../Layouts/DashboardLayout';
 import MyBookings from '../Pages/Dashboard/MyBookings/MyBookings';
 import PaymentSuccess from '../Pages/Dashboard/Payments/PaymentSuccess';
 import UsersManagement from '../Pages/Dashboard/UsersManagement/UsersManagement';
+import MyProfile from '../Pages/Dashboard/MyProfile/MyProfile';
 
 
 
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
         path: 'dashboard',
         element: <PrivateRouter> <DashboardLayout /> </PrivateRouter>,
         children: [
+            {
+                path: 'my-profile',
+                Component: MyProfile
+            },
             {
                 path: 'my-bookings',
                 element: <MyBookings />
