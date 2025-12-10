@@ -17,6 +17,7 @@ import PaymentSuccess from '../Pages/Dashboard/Payments/PaymentSuccess';
 import UsersManagement from '../Pages/Dashboard/UsersManagement/UsersManagement';
 import MyProfile from '../Pages/Dashboard/MyProfile/MyProfile';
 import About from '../Pages/About/About';
+import AddServiceForm from '../Pages/Dashboard/AddServicesForm/AddServicesForm';
 
 
 
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
             {
                 path: 'users-mangement',
                 Component: UsersManagement
+            },
+            {
+                path: 'add-services',
+                Component: AddServiceForm
             }
         ]
     }

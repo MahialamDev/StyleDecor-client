@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MyContainer from '../../Layouts/MyContainer';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '../../Hooks/useAxiosInstance';
@@ -8,15 +8,19 @@ import { Link } from 'react-router';
 import TransparentBtn from '../../Components/UI/TransparentBtn/TransparentBtn';
 
 const Services = () => {
-
+    const [order, setOrder] = useState("")
+    const [searchText, setSearchText] = useState("")
     const axiosInstance = useAxiosInstance();
     const { data:services = [], isLoading } = useQuery({
-        queryKey: ['services',],
+        queryKey: ['services',order, searchText],
         queryFn: async () => {
-            const res = await axiosInstance.get('/services');
+            const res = await axiosInstance.get(`/services?sort=cost&order=${order}&searchText=${searchText}`);
             return res.data;
         }
     })
+
+
+
 
     
 
@@ -31,6 +35,32 @@ const Services = () => {
                    <h1 className='text-center text-4xl font-semibold'>Our Services</h1>
                     <span className='block h-1 mx-auto w-10 bg-secondary mt-2'></span>
                     {/* Grid Display */}
+
+                    {/* Search & Sort */}
+<div className="mt-8 p-5 bg-base-200 rounded-lg shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+{/* Sort Dropdown */}
+<select
+value={order}
+onChange={(e) => setOrder(e.target.value)}
+className="select w-full md:w-52"
+>
+<option value="">Sort By</option>
+<option value="asc">Price Min - Max</option>
+<option value="desc">Price Max - Min</option>
+</select>
+
+
+{/* Search Input */}
+<input
+type="search"
+value={searchText}
+onChange={(e) => setSearchText(e.target.value)}
+placeholder="Search Services"
+className="input w-full md:w-72"
+/>
+</div>
+
+
                     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-5 mt-10'>
                         {
                             services.map(service => 

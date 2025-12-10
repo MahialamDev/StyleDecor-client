@@ -1,4 +1,4 @@
-import { Handbag, UserPen, Users } from 'lucide-react';
+import { FilePlus, Handbag, UserPen, Users } from 'lucide-react';
 import React from 'react';
 import { Link, Outlet } from 'react-router';
 
@@ -67,6 +67,14 @@ const DashboardLayout = () => {
             {/* Home icon */}
            <UserPen size={20} />
             <span className="is-drawer-close:hidden">My Profile</span>
+          </Link>
+        </li>
+              {/* Add Services */}
+              <li>
+          <Link to='/dashboard/add-services' className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Services">
+            {/* servoce */}
+           <FilePlus size={20} />
+            <span className="is-drawer-close:hidden">Add Serices</span>
           </Link>
         </li>
       </ul>

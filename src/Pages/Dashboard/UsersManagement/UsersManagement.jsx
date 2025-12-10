@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { motion } from "framer-motion";
@@ -6,14 +6,20 @@ import { User, Shield, Trash2, Search } from "lucide-react";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
-
+  const [searchText, setSearchText] = useState("");
+  const [sort, setSort] = useState("");
   const { data: users = [] } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", searchText, sort],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get(`/users?searchText=${searchText}&sort=${sort}`);
       return res.data;
     },
   });
+
+
+  console.log(searchText)
+
+
 
   return (
     <div className="p-6">
@@ -28,6 +34,7 @@ const UsersManagement = () => {
       <div className="max-w-md mx-auto mb-10">
         <div className="relative">
           <input
+            onChange={(e)=>setSearchText(e.target.value)}
             type="text"
             placeholder="Search users..."
             className="w-full py-3 pl-12 pr-4 border border-gray-300 rounded-xl shadow-sm focus:outline-primary"
@@ -37,7 +44,38 @@ const UsersManagement = () => {
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
           />
         </div>
+
+        <div className="w-[200px] mt-5">
+          <select onChange={e=> setSort(e.target.value)} defaultValue="Pick a color" className="select">
+            <option disabled={true}>Select sort</option>
+            <option value="">All</option>
+            <option value='decorators'>Decoratos</option>
+            <option value='admin'>Admin</option>
+          </select>
+        </div>
+
+
       </div>
+
+
+      
+      {/* No Result Found */}
+{users.length === 0 && (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="flex flex-col items-center justify-center w-full py-16"
+  >
+
+    <h2 className="text-xl font-semibold mt-6 text-gray-700">
+      No matching users found
+    </h2>
+
+    <p className="text-gray-500 mt-1 text-sm">
+      Try adjusting your search or filter settings.
+    </p>
+  </motion.div>
+)}
 
       {/* User Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

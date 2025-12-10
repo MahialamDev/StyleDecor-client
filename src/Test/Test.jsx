@@ -1,5 +1,6 @@
 import React from 'react';
 import DecoratorApplications from '../Pages/DecoratorApplications/DecoratorApplications';
+import AddServiceForm from '../Pages/Dashboard/AddServicesForm/AddServicesForm';
 
 
 
@@ -8,6 +9,7 @@ const Test = () => {
         <>
             ok
             <DecoratorApplications></DecoratorApplications>
+            <AddServiceForm></AddServiceForm>
         </>
     );
 };
