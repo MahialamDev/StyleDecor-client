@@ -2,11 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import { Settings2, UserCheck, Calendar, MapPin, Mail, CreditCard } from "lucide-react";
 
+// Updated colors for dark mode compatibility
 const statusColors = {
-  paid: "bg-green-100 text-green-600",
-  pending: "bg-yellow-100 text-yellow-600",
-  cancelled: "bg-red-100 text-red-600",
+  paid: "bg-success/20 text-success",
+  pending: "bg-warning/20 text-warning",
+  cancelled: "bg-error/20 text-error",
 };
 
 const ManageBookings = () => {
@@ -14,6 +17,7 @@ const ManageBookings = () => {
   const modalRef = useRef();
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [sort, setSort] = useState("");
+
   const { data: bookings = [], refetch: decRefetch } = useQuery({
     queryKey: ["bookings", sort],
     queryFn: async () => {
@@ -27,179 +31,183 @@ const ManageBookings = () => {
     setSelectedBooking(booking);
   };
 
-  console.log('dis', selectedBooking)
-
-  const { data: decorators = [] } = useQuery({
+  const { data: decorators = [], refetch } = useQuery({
     queryKey: ["decorators", selectedBooking],
     queryFn: async () => {
+      if (!selectedBooking) return [];
       const res = await axiosSecure(
         `/decorators?district=${selectedBooking.booking_district}&work_status=available&application_status=approved`
       );
       return res.data;
     },
+    enabled: !!selectedBooking,
   });
 
   const handleAssignDecorators = (decorator) => {
-  
     axiosSecure.patch(`/assign-decorator?booking_id=${selectedBooking._id}`, decorator)
-      .then(res => {
+      .then(() => {
+        modalRef.current.close();
+        Swal.fire({
+          title: "Assigned Successfully!",
+          icon: "success",
+        });
+        refetch();
         decRefetch();
-      console.log(res)
-    })
-  }
+      });
+  };
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl md:text-2xl font-semibold mb-4 flex items-center md:gap-10 justify-between ">
-        Manage Bookings ({bookings.length})
-        <div className="border border-gray-300">
+    <div className="p-4 md:p-6 min-h-screen">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-base-300 pb-6">
+        <div>
+          <h1 className="text-2xl font-black text-base-content tracking-tight flex items-center gap-3">
+            <Settings2 className="text-primary" />
+            Manage Bookings
+            <span className="badge badge-primary badge-outline font-mono">{bookings.length}</span>
+          </h1>
+          <p className="text-sm text-base-content/60 mt-1">Assign decorators and monitor event statuses.</p>
+        </div>
+
+        <div className="flex items-center gap-3 bg-base-200 p-1 rounded-xl border border-base-300">
+          <span className="text-xs font-bold uppercase tracking-widest px-3 opacity-50">Sort</span>
           <select
             onChange={(e) => setSort(e.target.value)}
             defaultValue=""
-            className="select select-ghost w-[150px] "
+            className="select select-sm select-ghost focus:bg-transparent text-base-content"
           >
-            <option disabled={true}>Sort By</option>
-            <option value="">All</option>
+            <option value="">All Transactions</option>
             <option value="service_status=cancelled">Cancelled</option>
-            <option value="payment_status=paid">Pending</option>
+            <option value="payment_status=paid">Pending (Paid)</option>
           </select>
         </div>
-      </h1>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {bookings.map((booking) => (
           <motion.div
             key={booking._id}
-            whileHover={{ scale: 1.02 }}
-            className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all bg-white"
+            whileHover={{ y: -5 }}
+            className="group bg-base-100 border border-primary/20 rounded-[2rem] p-6 shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300"
           >
             {/* Header */}
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-semibold">{booking.service_name}</h2>
-              <span
-                className={`px-2 py-1 text-green-400 bg-green-100 text-xs rounded-full capitalize ${
-                  statusColors[booking.payment_status]
-                }`}
-              >
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-xl font-bold text-base-content leading-tight group-hover:text-primary transition-colors">
+                {booking.service_name}
+              </h2>
+              <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full ${statusColors[booking.payment_status] || "bg-base-200 text-base-content"}`}>
                 {booking.payment_status}
               </span>
             </div>
 
-            {/* Booking Date */}
-            <p className="text-sm text-gray-500 mb-2">
-              Booking Date:{" "}
-              <span className="font-medium">{booking.booking_date}</span>
-            </p>
-
-            {/* Service Status */}
-            <p className="text-sm mb-3">
-              Service Status:
-              <span
-                className={`ml-2 px-2 py-1 text-xs rounded-full capitalize ${
-                  booking.service_status === "cancelled"
-                    ? "bg-red-100 text-red-400"
-                    : "text-green-400 bg-green-50"
-                }`}
-              >
-                {booking.service_status} 
-               </span> <span className="w-full inline-block text-green-400 mt-1"> <span className="text-base-content">Decorator : </span> {booking?.decorator_name || "N/A"}</span>
-            </p>
-
-            {/* Divider */}
-            <div className="border-b my-2"></div>
-
-            {/* Info */}
-            <div className="space-y-1 text-sm">
-              <p>
-                <span className="font-medium">Client Email:</span>{" "}
-                {booking.client_email}
-              </p>
-              <p>
-                <span className="font-medium">District</span>{" "}
-                {booking.booking_district}
-              </p>
-              <p>
-                <span className="font-medium">Category:</span>{" "}
-                {booking.service_category}
-              </p>
-              <p>
-                <span className="font-medium">Cost:</span> ৳
-                {booking.booking_cost}
-              </p>
+            {/* Date & Decorator */}
+            <div className="flex items-center gap-4 text-xs font-bold mb-6">
+              <div className="flex items-center gap-1.5 text-base-content/50">
+                <Calendar size={14} />
+                {booking.booking_date}
+              </div>
+              <div className="flex items-center gap-1.5 text-success">
+                <UserCheck size={14} />
+                {booking?.decorator_name || "Unassigned"}
+              </div>
             </div>
 
-            {/* Footer */}
-            <div className="mt-4 flex justify-between items-center">
-              <p className="text-xs text-gray-500">
-                Created: {booking.created_At.slice(0, 10)}
+            {/* Core Info */}
+            <div className="space-y-3 p-4 bg-base-200/50 rounded-2xl border border-base-300/50 text-sm mb-6">
+              <div className="flex items-center gap-2 text-base-content/70">
+                <Mail size={14} className="opacity-40" />
+                <span className="truncate">{booking.client_email}</span>
+              </div>
+              <div className="flex items-center gap-2 text-base-content/70">
+                <MapPin size={14} className="opacity-40" />
+                <span>{booking.booking_district}</span>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-base-300">
+                <span className="text-[10px] font-black uppercase opacity-40 italic">{booking.service_category}</span>
+                <span className="font-black text-primary flex items-center gap-1">
+                  <CreditCard size={14} /> ৳{booking.booking_cost}
+                </span>
+              </div>
+            </div>
+
+            {/* Footer Action */}
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[10px] font-bold opacity-30 italic">
+                Dep: {booking.created_At.slice(0, 10)}
               </p>
 
-              {booking?.service_status === "cancelled" ? 
-                <span className="px-4 py-1.5 cursor-not-allowed rounded-full text-base-content text-sm font-medium bg-orange-200 capitalize">
-                  {booking?.service_status}
-                </span>
-
-
-               : booking?.payment_status != "paid" ? 
-                <span className="px-4 py-1.5 cursor-not-allowed rounded-full text-base-content text-sm font-medium bg-yellow-200 capitalize">
-                  Not Paid
-                  </span>
-
-                  
-               : booking?.service_status === "wait_for_assign" ? 
-                
+              {booking?.service_status === "cancelled" ? (
+                <span className="badge badge-error badge-outline h-9 px-4 font-bold text-[10px] uppercase">Terminated</span>
+              ) : booking?.payment_status !== "paid" ? (
+                <span className="badge badge-warning badge-outline h-9 px-4 font-bold text-[10px] uppercase tracking-tighter">Awaiting Payment</span>
+              ) : booking?.service_status === "wait_for_assign" ? (
                 <button
                   onClick={() => handleFindDecorators(booking)}
-                  className="px-3 border border-blue-600 py-2 cursor-pointer hover:bg-transparent text-sm bg-blue-600 text-white rounded-lg hover:text-blue-600"
+                  className="btn btn-primary btn-sm rounded-xl h-9 px-4 font-bold shadow-lg shadow-primary/20"
                 >
-                  Find Decorators
-                    </button> :
-                    
-                    <span className="px-4 py-1.5 cursor-not-allowed rounded-full text-sm font-medium text-green-400 capitalize">
-                      {booking?.service_status}
-                  </span>
-                    
-
-
-              }
+                  Find Decorator
+                </button>
+              ) : (
+                <span className="badge badge-success badge-outline h-9 px-4 font-bold text-[10px] uppercase">{booking?.service_status}</span>
+              )}
             </div>
           </motion.div>
         ))}
       </div>
 
-      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Decorators : {decorators.length}</p>
-          <div className="overflow-x-auto">
-            <table className="table">
-              {/* head */}
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>District</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {decorators.map((decorator, i ) => (
-                  <tr key={decorator._id}>
-                    <th>{i + 1}</th>
-                    <td>{decorator.name}</td>
-                    <td>{decorator.district}</td>
-                    <td>
-                      <button onClick={()=> handleAssignDecorators(decorator)} className="btn">Assign Decorators</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Modal Section */}
+      <dialog ref={modalRef} className="modal modal-bottom sm:modal-middle backdrop-blur-sm">
+        <div className="modal-box max-w-3xl p-0 overflow-hidden bg-base-100 border border-base-300 rounded-3xl">
+          {/* Modal Header */}
+          <div className="bg-primary p-6 text-primary-content">
+            <h3 className="font-black text-2xl uppercase tracking-tighter">Assign Personnel</h3>
+            <div className="flex items-center justify-between mt-2 opacity-80">
+              <p className="text-sm font-medium">District Filter: {selectedBooking?.booking_district}</p>
+              <p className="text-xs font-bold bg-black/20 px-3 py-1 rounded-full italic">Available: {decorators.length}</p>
+            </div>
           </div>
-          <div className="modal-action">
+
+          <div className="p-6">
+            <div className="overflow-x-auto rounded-2xl border border-base-300 bg-base-200/30">
+              <table className="table table-zebra">
+                <thead>
+                  <tr className="border-base-300 text-base-content/50 uppercase text-[10px] tracking-widest">
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>District</th>
+                    <th className="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="text-base-content font-medium">
+                  {decorators.map((decorator, i) => (
+                    <tr key={decorator._id} className="border-base-300 hover:bg-base-300/50 transition-colors">
+                      <th className="opacity-30">{i + 1}</th>
+                      <td className="font-bold">{decorator.name}</td>
+                      <td className="opacity-70 italic">{decorator.district}</td>
+                      <td className="text-right">
+                        <button
+                          onClick={() => handleAssignDecorators(decorator)}
+                          className="btn btn-primary btn-xs rounded-lg px-4 h-8"
+                        >
+                          Assign
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {decorators.length === 0 && (
+                <div className="p-10 text-center text-base-content/30 italic font-medium">
+                  No available decorators found in this district.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="modal-action px-6 pb-6">
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
+              <button className="btn btn-ghost font-bold uppercase tracking-widest text-xs">Dismiss</button>
             </form>
           </div>
         </div>

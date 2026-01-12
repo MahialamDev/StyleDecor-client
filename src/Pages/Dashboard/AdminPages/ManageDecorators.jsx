@@ -23,6 +23,15 @@ const ManageDecorators = () => {
     },
   });
 
+  // Dark-mode aware SweetAlert helper
+  const toast = (title, text, icon) => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+    });
+  };
+
   const handleApproveDecorator = (email) => {
     const updateRole = "decorator";
     axiosSecure
@@ -32,7 +41,7 @@ const ManageDecorators = () => {
       .then((res) => {
         if (res.data.modifiedCount) {
           refetch();
-          Swal.fire("Updated!", "Approved Decorator Successfully.", "success");
+          toast("Updated!", "Approved Decorator Successfully.", "success");
         }
       });
   };
@@ -43,28 +52,29 @@ const ManageDecorators = () => {
       .then((res) => {
         if (res.data.modifiedCount) {
           refetch();
-          Swal.fire("Updated!", "Rejected Decorator Successfully.", "success");
+          toast("Updated!", "Rejected Decorator Successfully.", "success");
         }
       });
   };
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center min-h-[60vh] text-gray-500">
+      <div className="flex justify-center items-center min-h-[60vh] text-base-content opacity-50">
         Loading decorators...
       </div>
     );
 
   if (decorators.length === 0)
     return (
-      <div className="flex justify-center items-center min-h-[60vh] text-gray-500">
+      <div className="flex justify-center items-center min-h-[60vh] text-base-content opacity-50">
         No decorator applications found.
       </div>
     );
 
   return (
-    <div className="p-6 bg-slate-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-12">
+    // Changed bg-slate-100 to bg-base-200
+    <div className="p-6  min-h-screen">
+      <h1 className="text-3xl font-bold text-center mb-12 text-base-content">
         Decorator Management
         <span className="ml-2 text-primary">({decorators.length})</span>
       </h1>
@@ -73,16 +83,17 @@ const ManageDecorators = () => {
         {decorators.map((decorator) => (
           <div
             key={decorator._id}
-            className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition"
+            // Changed bg-white to bg-base-100 and border color
+            className="relative bg-base-100 border border-base-300 rounded-3xl shadow-lg hover:shadow-2xl transition"
           >
             {/* Status Ribbon */}
             <div
               className={`absolute top-5 right-5 flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${
                 decorator.application_status === "approved"
-                  ? "bg-green-100 text-green-700"
+                  ? "bg-green-500/10 text-green-500"
                   : decorator.application_status === "rejected"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-yellow-100 text-yellow-700"
+                  ? "bg-red-500/10 text-red-500"
+                  : "bg-yellow-500/10 text-yellow-500"
               }`}
             >
               {decorator.application_status === "approved" && (
@@ -91,29 +102,29 @@ const ManageDecorators = () => {
               {decorator.application_status === "rejected" && (
                 <BadgeX size={14} />
               )}
-              {decorator.application_status}
+              <span className="capitalize">{decorator.application_status}</span>
             </div>
 
             {/* Header */}
-            <div className="p-6 border-b">
-              <h2 className="text-xl font-semibold text-gray-800">
+            <div className="p-6 border-b border-base-300">
+              <h2 className="text-xl font-semibold text-base-content">
                 {decorator.name}
               </h2>
-              <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+              <div className="flex items-center gap-2 text-sm text-base-content opacity-60 mt-1">
                 <Mail size={14} />
                 {decorator.email}
               </div>
             </div>
 
             {/* Body */}
-            <div className="p-6 space-y-4 text-sm">
+            <div className="p-6 space-y-4 text-sm text-base-content">
               <div className="flex items-center gap-3">
-                <Phone size={16} className="text-gray-400" />
+                <Phone size={16} className="opacity-40" />
                 <span>{decorator.phone || "N/A"}</span>
               </div>
 
               <div className="flex items-center gap-3">
-                <MapPin size={16} className="text-gray-400" />
+                <MapPin size={16} className="opacity-40" />
                 <span>
                   {decorator.district || "N/A"},{" "}
                   {decorator.region || "N/A"}
@@ -121,7 +132,7 @@ const ManageDecorators = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <CalendarDays size={16} className="text-gray-400" />
+                <CalendarDays size={16} className="opacity-40" />
                 <span>
                   {decorator.application_At
                     ? new Date(
@@ -132,12 +143,12 @@ const ManageDecorators = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <Hammer size={16} className="text-gray-400" />
+                <Hammer size={16} className="opacity-40" />
                 <span
-                  className={`font-semibold ${
+                  className={`font-semibold capitalize ${
                     decorator.work_status === "available"
-                      ? "text-green-600"
-                      : "text-red-600"
+                      ? "text-green-500"
+                      : "text-red-500"
                   }`}
                 >
                   {decorator.work_status || "N/A"}
@@ -146,18 +157,19 @@ const ManageDecorators = () => {
             </div>
 
             {/* Action */}
-            <div className="p-5 border-t bg-gray-50 rounded-b-3xl">
+            {/* Changed bg-gray-50 to bg-base-200/50 */}
+            <div className="p-5 border-t border-base-300 bg-base-200/50 rounded-b-3xl">
               {decorator.application_status === "approved" ? (
                 <button
                   onClick={() => handleRejectDecorator(decorator.email)}
-                  className="w-full py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition"
+                  className="w-full py-2.5 rounded-xl bg-error hover:bg-error/80 text-error-content font-semibold transition"
                 >
                   Reject Decorator
                 </button>
               ) : (
                 <button
                   onClick={() => handleApproveDecorator(decorator.email)}
-                  className="w-full py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold transition"
+                  className="w-full py-2.5 rounded-xl bg-success hover:bg-success/80 text-success-content font-semibold transition"
                 >
                   Approve Decorator
                 </button>

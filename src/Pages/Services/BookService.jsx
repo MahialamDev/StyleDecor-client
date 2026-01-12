@@ -35,13 +35,9 @@ const BookService = () => {
 
   const { register, handleSubmit, control, formState: { errors } } = useForm();
 
-  // Watch selected region for dynamic district select
   const selectedRegion = useWatch({ control, name: 'booking_region' });
-
-  // Get unique regions
   const regions = [...new Set(serviceCenters.map(c => c.region))];
 
-  // Get districts based on selected region
   const districtsByRegion = (region) => {
     if (!region) return [];
     return serviceCenters
@@ -58,7 +54,7 @@ const BookService = () => {
       client_number: data.client_number || 'N/A',
       serviceId: service._id,
       service_name: service.service_name,
-      service_category: data.service_category,
+      service_category: service.service_category, // Fixed: should use service object
       booking_cost: service.cost,
       booking_region: data.booking_region || 'N/A',
       booking_district: data.booking_district || 'N/A',
@@ -69,96 +65,91 @@ const BookService = () => {
     axiosSecure
       .post('/bookings', bookingInfo)
       .then((res) => {
-        console.log(res);
         navigate('/dashboard/my-bookings');
       })
       .catch(err => console.log(err));
   };
 
+  // Helper component for Input Icons to reduce repetition
+  const IconWrapper = ({ children }) => (
+    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-primary">
+      {children}
+    </div>
+  );
+
   return (
-    <MySection>
+    <MySection className="bg-base-100 min-h-screen">
       <MyContainer>
-        <div className="w-full max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-6">
-          <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-            Book Your Service
+        <div className="w-full max-w-3xl mx-auto bg-base-200 shadow-2xl rounded-2xl p-6 md:p-10 border border-base-300 transition-colors duration-300">
+          <h1 className="text-3xl font-black text-center text-base-content mb-8">
+            Book Your <span className="text-primary">Service</span>
           </h1>
 
-          <form onSubmit={handleSubmit(handleBookNow)} className="space-y-4">
-            {/* Service Name */}
-            <div className="flex items-center gap-2">
-              <List className="text-primary w-5 h-5" />
+          <form onSubmit={handleSubmit(handleBookNow)} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            
+            {/* Service Name (Read Only) */}
+            <div className="form-control relative md:col-span-2">
+              <label className="label font-bold text-xs uppercase opacity-60">Service Title</label>
+              <IconWrapper><List size={18}/></IconWrapper>
               <input
-                {...register('service_name')}
-                className="flex-1 py-2 px-3 border border-gray-300 rounded-md bg-gray-100 text-gray-700"
                 value={service.service_name}
                 readOnly
+                className="input input-bordered bg-base-300 pl-10 w-full focus:outline-none cursor-not-allowed"
               />
             </div>
 
-            {/* Service Category */}
-            <div className="flex items-center gap-2">
-              <List className="text-primary w-5 h-5" />
+            {/* Name & Email (Read Only) */}
+            <div className="form-control relative">
+              <label className="label font-bold text-xs uppercase opacity-60">Your Name</label>
+              <IconWrapper><User size={18}/></IconWrapper>
               <input
-                {...register('service_category')}
-                className="flex-1 py-2 px-3 border border-gray-300 rounded-md bg-gray-100 text-gray-700 capitalize"
-                value={service.service_category}
-                readOnly
-              />
-            </div>
-
-            {/* Name */}
-            <div className="flex items-center gap-2">
-              <User className="text-primary w-5 h-5" />
-              <input
-                {...register('client_name')}
-                className="flex-1 py-2 px-3 border border-gray-300 rounded-md bg-gray-100 text-gray-700"
                 value={user.displayName || user.name}
                 readOnly
+                className="input input-bordered bg-base-300 pl-10 w-full cursor-not-allowed"
               />
             </div>
 
-            {/* Email */}
-            <div className="flex items-center gap-2">
-              <Mail className="text-primary w-5 h-5" />
+            <div className="form-control relative">
+              <label className="label font-bold text-xs uppercase opacity-60">Email Address</label>
+              <IconWrapper><Mail size={18}/></IconWrapper>
               <input
-                {...register('client_email')}
-                className="flex-1 py-2 px-3 border border-gray-300 rounded-md bg-gray-100 text-gray-700"
                 value={user.email}
                 readOnly
+                className="input input-bordered bg-base-300 pl-10 w-full cursor-not-allowed"
               />
             </div>
 
-            {/* Cost */}
-            <div className="flex items-center gap-2">
-              <DollarSign className="text-primary w-5 h-5" />
+            {/* Cost & Booking Date */}
+            <div className="form-control relative">
+              <label className="label font-bold text-xs uppercase opacity-60">Service Cost</label>
+              <IconWrapper><DollarSign size={18}/></IconWrapper>
               <input
-                {...register('service_cost')}
-                className="flex-1 py-2 px-3 border border-gray-300 rounded-md bg-gray-100 text-gray-700"
-                value={service.cost}
+                value={`$${service.cost}`}
                 readOnly
+                className="input input-bordered bg-base-300 pl-10 w-full font-bold text-primary"
               />
             </div>
 
-            {/* Booking Date */}
-            <div className="flex items-center gap-2">
-              <Calendar className="text-primary w-5 h-5" />
+            <div className="form-control relative">
+              <label className="label font-bold text-xs uppercase opacity-60 text-primary">Schedule Date</label>
+              <IconWrapper><Calendar size={18}/></IconWrapper>
               <input
                 {...register('booking_date', { required: 'Please select a date.' })}
                 type="date"
-                className="flex-1 py-2 px-3 border border-gray-300 rounded-md"
+                className={`input input-bordered bg-base-100 pl-10 w-full focus:input-primary ${errors.booking_date ? 'input-error' : ''}`}
               />
+              {errors.booking_date && (
+                <p className="text-error text-xs mt-1 ml-1">{errors.booking_date.message}</p>
+              )}
             </div>
-            {errors.booking_date && (
-              <p className="text-red-500 block -mt-2">{errors.booking_date.message}</p>
-            )}
 
             {/* Region Select */}
-            <div>
-              <label className="block text-sm mb-1 font-semibold">Select Region</label>
+            <div className="form-control">
+              <label className="label font-bold text-xs uppercase opacity-60">Select Region</label>
               <select
-                {...register('booking_region', { required: true })}
+                {...register('booking_region', { required: 'Region is required' })}
                 defaultValue=""
-                className="select bg-base-200 w-full"
+                className="select select-bordered bg-base-100 focus:select-primary w-full"
               >
                 <option value="" disabled>Select Region</option>
                 {regions.map((r, i) => (
@@ -168,12 +159,13 @@ const BookService = () => {
             </div>
 
             {/* District Select */}
-            <div>
-              <label className="block text-sm mb-1 font-semibold">Select District</label>
+            <div className="form-control">
+              <label className="label font-bold text-xs uppercase opacity-60">Select District</label>
               <select
-                {...register('booking_district', { required: true })}
+                {...register('booking_district', { required: 'District is required' })}
                 defaultValue=""
-                className="select bg-base-200 w-full"
+                disabled={!selectedRegion}
+                className="select select-bordered bg-base-100 focus:select-primary w-full disabled:bg-base-300"
               >
                 <option value="" disabled>Select District</option>
                 {selectedRegion &&
@@ -185,22 +177,24 @@ const BookService = () => {
             </div>
 
             {/* Optional Message */}
-            <div className="flex flex-col">
-              <label className="mb-1 text-gray-600">Message (Optional)</label>
+            <div className="form-control md:col-span-2">
+              <label className="label font-bold text-xs uppercase opacity-60">Instructions (Optional)</label>
               <textarea
                 {...register('client_message')}
-                className="w-full py-2 px-3 border border-gray-300 rounded-md"
-                placeholder="Any special instructions..."
+                className="textarea textarea-bordered bg-base-100 focus:textarea-primary w-full h-24"
+                placeholder="Share any specific design preferences..."
               />
             </div>
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full cursor-pointer py-2 px-4 bg-primary text-white font-semibold rounded-md hover:bg-primary/80 transition"
-            >
-              Confirm Booking
-            </button>
+            <div className="md:col-span-2 mt-4">
+              <button
+                type="submit"
+                className="btn btn-primary w-full text-white font-bold text-lg rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+              >
+                Confirm Booking Now
+              </button>
+            </div>
           </form>
         </div>
       </MyContainer>

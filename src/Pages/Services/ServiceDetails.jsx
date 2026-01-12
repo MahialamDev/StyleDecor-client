@@ -27,94 +27,95 @@ const ServiceDetails = () => {
     }
 
     return (
-        <MySection>
+        <MySection className="bg-base-100 min-h-screen transition-colors duration-300">
             <MyContainer>
 
                 {/* Back Button */}
-                <Link to="/services" className="flex items-center gap-2 text-primary hover:underline mb-5">
-                    <ArrowLeft size={18} /> Back to Services
+                <Link to="/services" className="flex items-center gap-2 text-primary hover:gap-3 transition-all mb-6 group">
+                    <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> 
+                    <span className="font-medium">Back to Services</span>
                 </Link>
 
-                {/* Banner */}
-                <div className='w-full h-[350px] rounded-xl overflow-hidden shadow-lg'>
+                {/* Banner - Added border for dark mode visibility */}
+                <div className='w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden shadow-2xl border border-base-300'>
                     <img 
                         src={service?.images?.[0]?.url} 
                         alt={service?.images?.[0]?.alt}
-                        className='w-full h-full object-cover'
+                        className='w-full h-full object-cover hover:scale-105 transition-transform duration-700'
                     />
                 </div>
 
                 {/* Content */}
-                <div className="mt-8 space-y-6">
+                <div className="mt-10 space-y-8">
 
                     {/* Title + Category */}
-                    <div className="flex items-center justify-between">
-                        <h1 className="text-3xl md:text-4xl font-bold capitalize">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <h1 className="text-3xl md:text-5xl font-black text-base-content capitalize">
                             {service.service_name}
                         </h1>
 
-                        <span className="px-3 py-1 text-sm rounded-full bg-secondary/20 text-secondary font-medium capitalize">
-                            {service.service_category}
-                        </span>
+                        <div className="flex items-center gap-2">
+                             <span className="px-4 py-1.5 text-sm rounded-full bg-primary/10 text-primary border border-primary/20 font-bold capitalize">
+                                {service.service_category}
+                            </span>
+                        </div>
                     </div>
 
-                    {/* Price */}
-                    <div className="text-2xl font-semibold text-primary">
-                        {service.cost} {service.currency} 
-                        <span className="text-gray-500 text-base font-normal"> / {service.unit}</span>
-                    </div>
+                    {/* Price and Action */}
+                    <div className="flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl bg-base-200 border border-base-300 gap-6">
+                        <div className="text-3xl font-black text-primary">
+                            {service.cost} {service.currency} 
+                            <span className="text-base-content/50 text-lg font-medium"> / {service.unit}</span>
+                        </div>
 
-                    {/*  BOOK NOW BUTTON  */}
-                    <div>
                         <Link 
                             to={`/book-service/${service._id}`}
-                            className="
-                                inline-block 
-                                bg-primary 
-                                text-white 
-                                font-semibold 
-                                px-6 py-3 
-                                rounded-lg 
-                                shadow-md 
-                                hover:bg-primary/90 
-                                active:scale-95 
-                                transition 
-                                duration-200
-                            "
+                            className="btn btn-primary text-white px-10 rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition-all"
                         >
-                            Book Now
+                            Book This Service
                         </Link>
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-700 text-lg leading-relaxed">
-                        {service.description}
-                    </p>
-
-                    {/* Extra Info */}
-                    <div className="border rounded-xl p-4 md:p-5 bg-gray-50 space-y-3">
-
-                        <div className="flex items-center gap-3 text-gray-600">
-                            <UserRound size={20} />
-                            <span className="text-sm">
-                                Added by: <span className="font-medium">{service.createdByEmail}</span>
-                            </span>
-                        </div>
-
-                        <div className="flex items-center gap-3 text-gray-600">
-                            <Calendar size={20} />
-                            <span className="text-sm">
-                                Created: {new Date(service.createdAt).toLocaleDateString()}
-                            </span>
-                        </div>
-
-                        <div className="flex items-center gap-3 text-gray-600">
-                            <Tag size={20} />
-                            <span className="text-sm capitalize">Category: {service.service_category}</span>
-                        </div>
-                        
+                    <div className="prose max-w-none">
+                        <h3 className="text-xl font-bold text-base-content mb-3">About this service</h3>
+                        <p className="text-base-content/70 text-lg leading-relaxed">
+                            {service.description}
+                        </p>
                     </div>
 
+                    {/* Extra Info Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="flex items-center gap-4 p-4 rounded-xl bg-base-200/50 border border-base-300">
+                            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                <UserRound size={22} />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-xs uppercase font-bold opacity-40">Provider</span>
+                                <span className="text-sm font-semibold text-base-content truncate">{service.createdByEmail}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 rounded-xl bg-base-200/50 border border-base-300">
+                            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                <Calendar size={22} />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-xs uppercase font-bold opacity-40">Posted On</span>
+                                <span className="text-sm font-semibold text-base-content">{new Date(service.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-4 rounded-xl bg-base-200/50 border border-base-300">
+                            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                                <Tag size={22} />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-xs uppercase font-bold opacity-40">Service Type</span>
+                                <span className="text-sm font-semibold text-base-content capitalize">{service.service_category}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </MyContainer>
         </MySection>

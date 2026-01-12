@@ -37,90 +37,86 @@ const EditService = () => {
 
   // Handle Update
   const onSubmit = async (updatedData) => {
-
     try {
       await axiosSecure.patch(`/services/${id}/edit`, updatedData)
         .then(res => {
           if (res.data.modifiedCount) {
-          Swal.fire({
-      title: "Updated!",
-      text: "Your service has been updated.",
-      icon: "success"
-          });
-            
-            navigate('/dashboard/manage-services')
-        }
-      })
-
-
+            Swal.fire({
+              title: "Updated!",
+              text: "Your service has been updated.",
+              icon: "success",
+              background: 'var(--fallback-b1,oklch(var(--b1)))',
+              color: 'var(--fallback-bc,oklch(var(--bc)))',
+            });
+            navigate('/dashboard/manage-services');
+          }
+        });
     } catch (error) {
       console.error(error);
     }
   };
 
-  
-
   if (isLoading) return <ScreenLoading />;
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="p-4 max-w-3xl mx-auto min-h-screen border border-gray-300/20 shadow-sm rounded-xl">
 
       {/* Back Button */}
       <Link
         to="/dashboard/manage-services"
-        className="inline-flex items-center gap-2 text-primary mb-4 hover:underline"
+        className="inline-flex items-center gap-2 text-primary mb-4 hover:underline font-medium"
       >
         <ArrowLeft className="w-5 h-5" />
         Back to Services
       </Link>
 
       {/* Title */}
-      <h1 className="text-2xl font-semibold mb-5 flex items-center gap-2">
+      <h1 className="text-2xl font-semibold mb-5 flex items-center gap-2 text-base-content">
         <Pencil className="w-6 h-6 text-secondary" />
         Edit Service
       </h1>
 
-      {/* Form */}
+      {/* Form Card */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-white p-6 rounded-xl border border-gray-200 shadow-sm"
+        className="space-y-4 bg-base-100 p-6 rounded-xl "
       >
 
         {/* Service Name */}
         <div>
-          <label className="block font-medium mb-1">Service Name</label>
+          <label className="block font-medium mb-1 text-base-content/80">Service Name</label>
           <input
             {...register("service_name", { required: true })}
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-base-200 border-base-300 text-base-content"
           />
         </div>
 
-        {/* Cost + Unit */}
+        {/* Cost + Currency + Unit */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block font-medium mb-1">Cost</label>
+            <label className="block font-medium mb-1 text-base-content/80">Cost</label>
             <input
               {...register("cost", { required: true })}
               type="number"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-base-200 border-base-300 text-base-content"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Currency</label>
+            <label className="block font-medium mb-1 text-base-content/80">Currency</label>
             <input
               {...register("currency", { required: true })}
               type="text"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full bg-base-200 border-base-300 text-base-content"
             />
           </div>
 
           <div>
-            <label className="block font-medium mb-1">Unit</label>
+            <label className="block font-medium mb-1 text-base-content/80">Unit</label>
             <select
               {...register("unit", { required: true })}
-              className="select select-bordered w-full"
+              className="select select-bordered w-full bg-base-200 border-base-300 text-base-content"
             >
               <option value="" disabled>Select Unit</option>
               {units.map((u) => (
@@ -132,10 +128,10 @@ const EditService = () => {
 
         {/* Category */}
         <div>
-          <label className="block font-medium mb-1">Service Category</label>
+          <label className="block font-medium mb-1 text-base-content/80">Service Category</label>
           <select
             {...register("service_category", { required: true })}
-            className="select select-bordered w-full"
+            className="select select-bordered w-full bg-base-200 border-base-300 text-base-content"
           >
             <option value="" disabled>Select Category</option>
             {categories.map((cat) => (
@@ -146,49 +142,48 @@ const EditService = () => {
 
         {/* Description */}
         <div>
-          <label className="block font-medium mb-1">Description</label>
+          <label className="block font-medium mb-1 text-base-content/80">Description</label>
           <textarea
             {...register("description", { required: true })}
             rows={4}
-            className="textarea textarea-bordered w-full"
+            className="textarea textarea-bordered w-full bg-base-200 border-base-300 text-base-content"
           ></textarea>
         </div>
 
         {/* Image URL */}
         <div>
-          <label className="block font-medium mb-1">Image URL</label>
+          <label className="block font-medium mb-1 text-base-content/80">Image URL</label>
           <input
             {...register("imageUrl", { required: true })}
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-base-200 border-base-300 text-base-content"
           />
         </div>
 
         {/* Image Alt */}
         <div>
-          <label className="block font-medium mb-1">Image Alt</label>
+          <label className="block font-medium mb-1 text-base-content/80">Image Alt</label>
           <input
             {...register("imageAlt", { required: true })}
             type="text"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full bg-base-200 border-base-300 text-base-content"
           />
         </div>
 
         {/* Image Preview */}
         <div className="pt-3">
-          <p className="font-medium mb-2">Preview:</p>
-
+          <p className="font-medium mb-2 text-base-content">Preview:</p>
           <img
-            src={watchImage || service.imageUrl}
-            alt={service.imageAlt}
-            className="w-full rounded-lg border h-56 object-cover"
+            src={watchImage || (service && service.imageUrl)}
+            alt={service && service.imageAlt}
+            className="w-full rounded-lg border border-base-300 h-56 object-cover bg-base-300"
           />
         </div>
 
         {/* Submit */}
         <button
           type="submit"
-          className="cursor-pointer w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition text-center mt-4 font-medium"
+          className="cursor-pointer w-full btn btn-primary text-white transition-all mt-4 font-bold uppercase tracking-wide"
         >
           Update Service
         </button>

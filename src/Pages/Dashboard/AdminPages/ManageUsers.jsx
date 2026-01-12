@@ -1,159 +1,175 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import ScreenLoading from "../../../Components/Animation/ScreenLoading/ScreenLoading";
 import Swal from "sweetalert2";
-import { User, Shield, Trash2, Search, Edit2 } from "lucide-react";
+import { 
+  UserCog, 
+  ShieldCheck, 
+  ShieldAlert, 
+  Search, 
+  Mail, 
+  CalendarDays, 
+  Users,
+  Fingerprint,
+  ChevronRight
+} from "lucide-react";
+import { toast } from "react-toastify";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const [searchText, setSearchText] = useState("");
-  const [sort, setSort] = useState("");
+  const searchInputRef = useRef();
+  const [params, setParams] = useState({ text: "", sort: "" });
 
-  // Fetch users
   const { data: users = [], isLoading, refetch } = useQuery({
-    queryKey: ["users", searchText, sort],
+    queryKey: ["users", params.text, params.sort],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/users?searchText=${searchText}&sort=${sort}`
-      );
+      const res = await axiosSecure.get(`/users?searchText=${params.text}&sort=${params.sort}`);
       return res.data;
     },
-    keepPreviousData: false,
   });
 
-  // Update user role
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setParams(prev => ({ ...prev, text: searchInputRef.current.value }));
+  };
+
   const updateUserRole = (userId, newRole) => {
-    axiosSecure
-      .patch(`/users/role?id=${userId}&role=${newRole}`)
-      .then((res) => {
-        if (res.data.modifiedCount) {
-          refetch();
-          Swal.fire({
-            title: "Success",
-            text: `User role updated to "${newRole}"`,
-            icon: "success",
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        Swal.fire({
-          title: "Error",
-          text: "Something went wrong!",
-          icon: "error",
+    Swal.fire({
+      title: "Update Permissions?",
+      text: `Grant ${newRole.toUpperCase()} access level to this user?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Update",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/users/role?id=${userId}&role=${newRole}`).then((res) => {
+          if (res.data.modifiedCount) {
+            refetch();
+            toast.success(`Role updated successfully`);
+          }
         });
-      });
+      }
+    });
   };
 
   if (isLoading) return <ScreenLoading />;
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-4">
-        User Management <span className="text-primary">({users.length})</span>
-      </h1>
-      <span className="block h-1 mx-auto w-10 bg-secondary mb-8"></span>
+    <div className="min-h-screen bg-transparent space-y-8 pb-10">
+      {/* Header with Glass Effect */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center p-8 bg-base-200/40 border border-base-300 rounded-[2.5rem] backdrop-blur-md gap-6">
+        <div>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-3 bg-primary/20 rounded-2xl text-primary">
+              <Users size={28} />
+            </div>
+            <h1 className="text-3xl font-black text-base-content tracking-tight">Access Control</h1>
+          </div>
+          <p className="text-base-content/60 font-medium ml-1">Managing {users.length} system identities</p>
+        </div>
 
-      {/* Search & Sort */}
-      <div className="max-w-md mx-auto mb-8">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className="w-full py-3 pl-12 pr-4 border border-gray-300 rounded-xl shadow-sm focus:outline-primary"
-          />
-          <Search
-            size={20}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
-          />
-        </div>
-        <div className="mt-4 w-[200px]">
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="select w-full"
-          >
-            <option value="">All Roles</option>
-            <option value="admin">Admin</option>
-            <option value="decorator">Decorator</option>
-            <option value="user">User</option>
-          </select>
-        </div>
+        <form onSubmit={handleSearch} className="flex w-full lg:w-auto gap-3">
+          <div className="relative flex-1 lg:w-80">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" size={18} />
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Search UID, Email..."
+              className="input input-bordered w-full pl-12 bg-base-100/50 border-base-300 rounded-2xl focus:border-primary transition-all font-medium"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary rounded-2xl px-6 shadow-lg shadow-primary/20">
+            Search
+          </button>
+        </form>
       </div>
 
-      {/* Users Grid */}
-      {users.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16">
-          <h2 className="text-xl font-semibold text-gray-700">
-            No users found
-          </h2>
-          <p className="text-gray-500 mt-1 text-sm">
-            Adjust search or filter to see users.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {users.map((user) => (
-            <div
-              key={user._id}
-              className="bg-white shadow-lg rounded-2xl p-4 flex flex-col gap-4 border border-primary/50"
-            >
+      {/* Filter Bar */}
+      <div className="flex flex-wrap gap-2 px-2">
+        {["", "admin", "decorator", "user"].map((role) => (
+          <button
+            key={role}
+            onClick={() => setParams(prev => ({ ...prev, sort: role }))}
+            className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border transition-all ${
+              params.sort === role 
+              ? "bg-secondary border-secondary text-secondary-content shadow-md shadow-secondary/20" 
+              : "bg-base-200 border-base-300 text-base-content/50 hover:border-primary"
+            }`}
+          >
+            {role === "" ? "All Members" : role + "s"}
+          </button>
+        ))}
+      </div>
+
+      {/* User List Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
+        {users.map((user) => (
+          <div 
+            key={user._id} 
+            className="group relative bg-base-100 border border-gray-300/20 rounded-[2rem] shadow p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5"
+          >
+            <div className="flex justify-between items-start mb-6">
               <div className="flex items-center gap-4">
-                <img
-                  src={user.photoURL || "/default-avatar.png"}
-                  alt={user.name}
-                  className="w-14 h-14 rounded-full border object-cover"
-                  referrerPolicy="no-referrer"
-                />
+                <div className="avatar">
+                  <div className="w-16 h-16 rounded-[1.5rem] ring-2 ring-base-300 ring-offset-base-100 ring-offset-4 group-hover:ring-primary transition-all">
+                    <img src={user.photoURL || "/default-avatar.png"} alt="profile" />
+                  </div>
+                </div>
                 <div>
-                  <h2 className="text-lg font-semibold">{user.name}</h2>
-                  <p className="text-sm text-gray-500">{user.email}</p>
+                  <h3 className="text-lg font-black text-base-content truncate max-w-[150px]">{user.name}</h3>
+                  <div className={`badge badge-sm font-bold border-none py-3 px-3 rounded-lg mt-1 ${
+                    user.role === 'admin' ? 'bg-purple-500/10 text-purple-500' : 'bg-primary/10 text-primary'
+                  }`}>
+                    {user.role?.toUpperCase()}
+                  </div>
                 </div>
               </div>
-
-              <div className="text-sm text-gray-600 space-y-1">
-                <p className="flex items-center gap-2">
-                  <User size={16} />
-                  Joined:{" "}
-                  <span className="font-medium">
-                    {new Date(user.created_At).toLocaleDateString()}
-                  </span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Shield size={16} /> Role:{" "}
-                  <span
-                    className={`px-2 py-1 rounded text-xs font-semibold ${
-                      user.role === "admin"
-                        ? "bg-purple-100 text-purple-700"
-                        : user.role === "decorator"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {user.role}
-                  </span>
-                </p>
+              <div className="p-2 bg-base-200 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                <ChevronRight size={20} className="text-base-content/40" />
               </div>
-
-              <button
-                onClick={() =>
-                  user.role === "admin"
-                    ? updateUserRole(user._id, "user")
-                    : updateUserRole(user._id, "admin")
-                }
-                className={`mt-auto py-2 rounded-lg text-white font-medium shadow ${
-                  user.role === "admin"
-                    ? "bg-red-500 hover:bg-red-600"
-                    : "bg-green-500 hover:bg-green-600"
-                }`}
-              >
-                {user.role === "admin" ? "Remove Admin" : "Make Admin"}
-              </button>
             </div>
-          ))}
+
+            <div className="space-y-3 bg-base-200/50 p-4 rounded-2xl border border-base-300">
+              <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+                <span className="opacity-40 flex items-center gap-1.5"><Mail size={14}/> Email</span>
+                <span className="opacity-80 truncate ml-4 font-mono">{user.email}</span>
+              </div>
+              <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+                <span className="opacity-40 flex items-center gap-1.5"><CalendarDays size={14}/> Registered</span>
+                <span className="opacity-80">{new Date(user.created_At).toLocaleDateString()}</span>
+              </div>
+              <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+                <span className="opacity-40 flex items-center gap-1.5"><Fingerprint size={14}/> ID</span>
+                <span className="opacity-80 font-mono">...{user._id.slice(-6)}</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              {user.role === "admin" ? (
+                <button 
+                  onClick={() => updateUserRole(user._id, "user")}
+                  className="btn btn-block bg-error/10 hover:bg-error border-none text-error hover:text-white rounded-xl font-bold transition-all gap-2"
+                >
+                  <ShieldAlert size={18} /> Remove to Admin
+                </button>
+              ) : (
+                <button 
+                  onClick={() => updateUserRole(user._id, "admin")}
+                  className="btn btn-block bg-primary/10 hover:bg-primary border-none text-primary hover:text-white rounded-xl font-bold transition-all gap-2"
+                >
+                  <ShieldCheck size={18} /> Promote to Admin
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {users.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 border-2 border-dashed border-base-300 rounded-[3rem] opacity-30">
+          <Fingerprint size={80} strokeWidth={1} />
+          <h2 className="text-2xl font-black mt-4 uppercase tracking-[0.3em]">No Identities Found</h2>
         </div>
       )}
     </div>

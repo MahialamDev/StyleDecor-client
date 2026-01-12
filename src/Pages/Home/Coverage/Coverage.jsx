@@ -6,11 +6,14 @@ import useAxiosInstance from "../../../Hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import MySection from "../../../Layouts/MySection";
 import MyContainer from "../../../Layouts/MyContainer";
+import { useTheme } from "next-themes";
+import { MapPin } from "lucide-react";
 
 const Coverage = () => {
   const position = [23.685, 90.3563]; // Center of Bangladesh
   const axiosInstance = useAxiosInstance();
   const mapRef = useRef(null);
+  const { theme } = useTheme();
 
   const { data: serviceCenters = [], isLoading } = useQuery({
     queryKey: ["coverages"],
@@ -35,80 +38,99 @@ const Coverage = () => {
     }
   };
 
-  return (
-    <MySection className="pt-16 bg-gray-50">
-      <MyContainer>
-        {/* Section Title */}
-        <h1 className="font-bold text-2xl md:text-4xl text-center text-secondary mb-4 md:mb-8">
-          Service Coverage Across Bangladesh
-        </h1>
-        <p className="text-center text-gray-600 mb-8 md:mb-10 px-4 md:px-0">
-          Find our service centers and see how we cover almost every district.
-        </p>
+  const darkMapUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  const lightMapUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
-        {/* Search Bar */}
+  return (
+    <MySection className="py-20 bg-transparent transition-colors duration-300">
+      <MyContainer>
+        {/* Header Updated to match Unified Design System */}
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-3">
+            <MapPin size={14} /> Global Presence
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-base-content uppercase italic tracking-tighter">
+            Our Service <span className="text-primary">Coverage</span>
+          </h1>
+          <p className="text-base-content/60 max-w-2xl mx-auto font-medium mt-4 px-4">
+            Discover our presence across Bangladesh. Search for your district to find our nearest service hubs and expert decorators.
+          </p>
+        </div>
+
+        {/* Search Bar - Premium Style */}
         <form
           onSubmit={handleSearch}
-          className="max-w-lg mx-auto mb-8 flex flex-col sm:flex-row items-center shadow-md rounded-xl overflow-hidden"
+          className="max-w-2xl mx-auto mb-16 flex flex-col sm:flex-row items-center bg-base-100 rounded-[2rem] overflow-hidden border-2 border-base-300 p-2 shadow-sm focus-within:border-primary transition-all duration-300"
         >
           <div className="relative flex-1 w-full">
             <input
               type="text"
               name="location"
-              placeholder="Search by district..."
-              className="w-full py-3 pl-12 pr-4 border border-gray-300 rounded-t-xl sm:rounded-l-xl sm:rounded-t-none focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Search district (e.g. Dhaka, Jamalpur)"
+              className="w-full py-4 pl-12 pr-4 bg-transparent text-base-content focus:outline-none placeholder:text-base-content/30 font-bold uppercase text-xs tracking-tight"
             />
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-              <CiSearch size={20} />
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-primary">
+              <CiSearch size={22} strokeWidth={1} />
             </div>
           </div>
           <button
             type="submit"
-            className="mt-2 sm:mt-0 sm:ml-0 sm:rounded-r-xl bg-primary text-white px-6 py-3 font-medium hover:bg-primary/90 transition w-full sm:w-auto"
+            className="btn btn-primary rounded-[1.5rem] px-10 font-black uppercase tracking-widest text-xs w-full sm:w-auto shadow-lg shadow-primary/20"
           >
-            Search
+            Locate Hub
           </button>
         </form>
 
-        {/* Loading State */}
-        {isLoading && (
-          <p className="text-center text-gray-500 py-10">Loading service centers...</p>
+        {/* Map Section */}
+        {!isLoading && serviceCenters.length > 0 && (
+          <div className="relative z-0 border-2 border-base-300 rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-500 hover:border-primary/40 p-2 bg-base-100">
+            <div className="rounded-[2rem] overflow-hidden">
+                <MapContainer
+                  center={position}
+                  zoom={7}
+                  scrollWheelZoom={false}
+                  ref={mapRef}
+                  className="w-full h-[450px] sm:h-[650px]"
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
+                    url={theme === "dark" ? darkMapUrl : lightMapUrl}
+                  />
+                  {serviceCenters.map((center) => (
+                    <Marker key={center._id} position={[center.latitude, center.longitude]}>
+                      <Popup>
+                        <div className="p-2 min-w-[150px]">
+                          <h2 className="font-black text-primary uppercase text-sm italic tracking-tighter">
+                            {center.district} Hub
+                          </h2>
+                          <div className="h-[1px] w-full bg-base-300 my-2"></div>
+                          <p className="text-xs font-bold opacity-60 uppercase leading-relaxed">
+                            <span className="text-primary/70">Covers:</span><br />
+                            {center.covered_area.join(", ")}
+                          </p>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MapContainer>
+            </div>
+          </div>
         )}
 
-        {/* Map Section */}
-{!isLoading && serviceCenters.length > 0 && (
-  <div className="relative z-0 border rounded-xl overflow-hidden shadow-lg">
-    <MapContainer
-      center={position}
-      zoom={8}
-      scrollWheelZoom={false}
-      ref={mapRef}
-      className="w-full h-[400px] sm:h-[600px]"
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {serviceCenters.map((center) => (
-        <Marker key={center._id} position={[center.latitude, center.longitude]}>
-          <Popup>
-            <h2 className="font-semibold">{center.district}</h2>
-            <p className="text-gray-600 text-sm mt-1">
-              Service Areas: {center.covered_area.join(", ")}
-            </p>
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
-  </div>
-)}
+        {/* Loading & Empty States */}
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+             <span className="loading loading-spinner loading-lg text-primary"></span>
+             <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 italic">Decrypting Coordinates</p>
+          </div>
+        )}
 
-
-        {/* No Results */}
         {!isLoading && serviceCenters.length === 0 && (
-          <p className="text-center text-gray-500 py-10">
-            No service centers available at the moment.
-          </p>
+          <div className="text-center py-20 bg-base-100 rounded-[2.5rem] border-2 border-dashed border-base-300">
+             <p className="text-base-content/40 text-xs font-black uppercase tracking-widest">
+               No service centers detected in current sector.
+             </p>
+          </div>
         )}
       </MyContainer>
     </MySection>

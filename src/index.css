@@ -15,3 +15,29 @@
   --color-neutral: #EF2853; /* btn-neutral */
   --color-accent: #a3e635;  /* btn-accent */
 }
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  /* Default: false; jodi dark mode auto switch korte chan */
+  
+  --color-primary: #69C5D3;    /* Apnar deya original primary */
+  --color-secondary: #569B52;  /* Apnar deya original secondary */
+  
+  /* Background Colors (Darker shades) */
+  --color-base-100: #1a1c1e;   /* Deep dark background */
+  --color-base-200: #121416;   /* Ektu dark shade cards ba inputs er jonno */
+  --color-base-300: #0d0f10;   /* Sobcheye dark shade */
+  
+  /* Text Color */
+  --color-base-content: #E2E8F0; /* Off-white text, dark mode e pure black er bodole eta bhalo hoy */
+  
+  /* Neutral & Accent */
+  --color-neutral: #EF2853;    /* Apnar original neutral red-ish color */
+  --color-accent: #a3e635;     /* Apnar original lime accent */
+  
+  /* Info, Success, Warning, Error - Dark mode friendly */
+  --color-info: #69C5D3;
+  --color-success: #569B52;
+  --color-warning: #FBBD23;
+  --color-error: #F87272;
+}

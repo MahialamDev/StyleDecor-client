@@ -27,6 +27,12 @@ import DashboardLayout2 from '../Layouts/MyLay';
 import EditService from '../Pages/Dashboard/AdminPages/EditService';
 import DecoratorApplications from '../Pages/DecoratorApplications/DecoratorApplications';
 import AdminRoute from './AdminRoute';
+import ErrorPage from '../Components/Animation/ErrorPage/ErrorPage';
+import DecoratorRoute from './DecoratorRoute';
+import PaymentsHistory from '../Pages/Dashboard/PaymentsHistory/PaymentsHistory';
+import PaymentCancelled from '../Pages/Dashboard/Payments/PaymentCancelled';
+import Privacy from '../Pages/Privacy/Privacy';
+
 
 
 
@@ -36,6 +42,7 @@ const router = createBrowserRouter([
         path: '/',
         Component: MainLayout,
         hydrateFallbackElement: <ScreenLoading />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
@@ -64,7 +71,12 @@ const router = createBrowserRouter([
             {
                 path: 'decorator-apply',
                 element: <PrivateRouter><DecoratorApplications /></PrivateRouter>
-            }
+            },
+            {
+                path: 'privacy',
+                Component: Privacy
+            },
+           
         ]
     },
     {
@@ -94,8 +106,16 @@ const router = createBrowserRouter([
                 element: <MyBookings />
             },
             {
+                path: 'my-payment-history', //users
+                element: <PaymentsHistory />
+            },
+            {
                 path: 'payment-success', //users
                 Component: PaymentSuccess
+            },
+            {
+                path: 'payment-cancel', //users
+                Component: PaymentCancelled
             },
             {
                 path: 'earnings-summery', //decoratros00
@@ -103,7 +123,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'my-assigned-projects', //decoratros00
-                Component: MyAssingedProject
+                element: <DecoratorRoute ><MyAssingedProject /></DecoratorRoute>
             },
             {
                 path: 'manage-services', //admin00

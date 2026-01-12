@@ -3,7 +3,7 @@ import MySection from '../../../Layouts/MySection';
 import MyContainer from '../../../Layouts/MyContainer';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosInstance from '../../../Hooks/useAxiosInstance';
-import { Star } from 'lucide-react';
+import { Star, Mail, ArrowUpRight, Trophy } from 'lucide-react';
 
 const TopDecorators = () => {
   const axiosInstance = useAxiosInstance();
@@ -15,60 +15,95 @@ const TopDecorators = () => {
     },
   });
 
-  // Dummy messages & ratings
   const dummyData = [
-    { message: "Creative and punctual decorator!", rating: 4.8 },
-    { message: "Transforms spaces beautifully!", rating: 4.6 },
-    { message: "Highly professional and reliable.", rating: 4.9 },
+    { message: "Creative and punctual decorator!", rating: 4.8, projects: 120 },
+    { message: "Transforms spaces beautifully!", rating: 4.6, projects: 85 },
+    { message: "Highly professional and reliable.", rating: 4.9, projects: 150 },
   ];
 
-  // Limit to top 3
   const top3 = topDecorators.slice(0, 3);
 
   return (
-    <MySection>
+    <MySection className="bg-transparent">
       <MyContainer>
-        <h2 className="text-3xl font-bold mb-6 text-center">
-          Top Decorators
-        </h2>
+        {/* Header Updated to match Unified Design System */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b-2 border-base-300 pb-8">
+          <div className="text-left">
+            <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-2">
+              <Trophy size={14} /> Expert Team
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-base-content uppercase italic tracking-tighter">
+              Our Top <span className="text-primary">Decorators</span>
+            </h2>
+          </div>
+          <p className="text-base-content/60 max-w-md text-sm font-medium md:text-right leading-relaxed">
+            Work with our most-rated professionals who have transformed hundreds 
+            of homes into dream spaces with verified excellence.
+          </p>
+        </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {top3.map((decorator, index) => {
-            const { message, rating } = dummyData[index];
+            const info = dummyData[index] || dummyData[0];
+            
             return (
               <div
                 key={decorator._id}
-                className="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 flex flex-col gap-3 border border-gray-100 hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105"
+                className="group relative bg-base-100 border-2 border-base-300 rounded-[2.5rem] p-8 transition-all duration-500 hover:border-primary hover:shadow-2xl hover:shadow-primary/5 overflow-hidden"
               >
-                {/* Avatar */}
-                <div className="w-16 h-16 bg-primary/20 text-primary rounded-full flex items-center justify-center text-xl font-bold">
-                  {decorator.name.charAt(0)}
+                {/* Decorative Element */}
+                <div className="absolute top-8 right-8 opacity-20 group-hover:opacity-100 group-hover:text-primary transition-all duration-300">
+                  <ArrowUpRight size={28} />
                 </div>
 
-                {/* Name & Email */}
-                <div>
-                  <h3 className="text-xl font-semibold">{decorator.name}</h3>
-                  <p className="text-sm text-gray-500">{decorator.email}</p>
+                <div className="flex items-center gap-5 mb-8">
+                  {/* Avatar Section */}
+                  <div className="relative">
+                    <div className="w-20 h-20 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-primary text-3xl font-black shadow-inner overflow-hidden">
+                       {decorator.name.charAt(0)}
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 bg-primary text-primary-content text-[10px] font-black px-2 py-1 rounded-lg shadow-lg uppercase tracking-tighter">
+                      Elite
+                    </div>
+                  </div>
+
+                  {/* Identity */}
+                  <div>
+                    <h3 className="text-2xl font-black text-base-content group-hover:text-primary transition-colors leading-none mb-2">
+                      {decorator.name}
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 text-primary">
+                        <Star size={14} fill="currentColor" />
+                        <span className="text-sm font-black">{info.rating}</span>
+                      </div>
+                      <span className="text-[10px] font-bold opacity-40 uppercase tracking-widest border-l border-base-300 pl-2">
+                        {info.projects} Projects
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-1 mt-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={18}
-                      className={`${
-                        i < Math.round(rating) ? 'text-yellow-400' : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                  <span className="text-sm text-gray-600 ml-2">({rating.toFixed(1)})</span>
+                {/* Testimonial/Info Box */}
+                <div className="bg-base-200/50 rounded-2xl p-5 mb-8 border border-base-300 transition-colors group-hover:bg-base-200">
+                  <p className="text-base-content/70 text-sm italic leading-relaxed font-medium">
+                    "{info.message}"
+                  </p>
                 </div>
 
-                {/* Message */}
-                <p className="text-gray-600 text-sm mt-2 italic">
-                  "{message}"
-                </p>
+                {/* Footer Action */}
+                <div className="flex items-center justify-between pt-6 border-t-2 border-base-300">
+                  <div className="flex items-center gap-2 text-base-content/40 hover:text-primary transition-colors cursor-pointer">
+                    <Mail size={16} />
+                    <span className="text-[10px] font-bold uppercase tracking-tight truncate max-w-[120px]">
+                      {decorator.email}
+                    </span>
+                  </div>
+                  <button className="btn btn-primary btn-sm rounded-xl font-black uppercase text-[10px] px-6 tracking-widest shadow-md">
+                    View Profile
+                  </button>
+                </div>
               </div>
             );
           })}

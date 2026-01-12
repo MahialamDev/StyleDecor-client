@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { User, Mail, Phone } from "lucide-react";
+import { User, Mail, Phone, MapPin, Hash } from "lucide-react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "../../Hooks/useAxiosInstance";
@@ -18,19 +18,14 @@ const DecoratorApplications = () => {
       .post("/decorators", data)
       .then((res) => {
         if (res.data.insertedId) {
-          reset()
-           Swal.fire({
-                      title: "Success",
-                      text: `Your Application has been succfully."`,
-                      icon: "success",
-                    });
-        } else {
+          reset();
           Swal.fire({
-  icon: "error",
-  title: "Oops...",
-  text: "Something went wrong!",
-  footer: '<a href="#">Why do I have this issue?</a>'
-});
+            title: "Success",
+            text: "Your Application has been successfully submitted!",
+            icon: "success",
+            background: 'var(--fallback-b1,oklch(var(--b1)))', // SweetAlert dark support
+            color: 'var(--fallback-bc,oklch(var(--bc)))'
+          });
         }
       })
       .catch((err) => console.log(err));
@@ -44,13 +39,9 @@ const DecoratorApplications = () => {
     },
   });
 
-  // Watch selected region
   const selectedRegion = useWatch({ control, name: "region" });
-
-  // Unique regions
   const regions = [...new Set(serviceCenters.map((c) => c.region))];
 
-  // Get districts based on selected region
   const districtsByRegion = (region) => {
     return serviceCenters
       .filter((c) => c.region === region)
@@ -59,122 +50,132 @@ const DecoratorApplications = () => {
 
   if (isLoading)
     return (
-      <p className="text-center py-20 text-gray-500 font-medium">
-        Loading regions...
-      </p>
+      <div className="flex justify-center items-center py-20">
+        <span className="loading loading-dots loading-lg text-primary"></span>
+      </div>
     );
 
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-6 py-10 md:py-16">
-      <h1 className="text-2xl md:text-4xl font-semibold text-gray-800 mb-6 text-center">
-        Decorator <span className="text-primary">Application</span>
-      </h1>
-      <span className="block h-1 mx-auto w-12 bg-secondary -mt-2 mb-6"></span>
+    <div className="max-w-3xl mx-auto px-4 md:px-6 py-10 md:py-16 bg-base-100 transition-colors duration-300">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl md:text-4xl font-black text-base-content">
+          Decorator <span className="text-primary">Application</span>
+        </h1>
+        <span className="block h-1 mx-auto w-12 bg-secondary mt-2 rounded-full"></span>
+        <p className="mt-4 text-base-content/60 italic">Join our team and showcase your creativity to the world.</p>
+      </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-lg rounded-xl p-6 md:p-8 space-y-5"
+        className="bg-base-200 shadow-2xl rounded-2xl p-6 md:p-10 space-y-6 border border-base-300"
       >
-        {/* Name */}
-        <div className="flex items-center gap-3 border-b border-gray-200 py-2">
-          <User className="text-primary w-5 h-5" />
-          <input
-            value={user.displayName}
-            readOnly
-            type="text"
-            placeholder="Name"
-            {...register("name")}
-            className="w-full outline-none px-2 py-2 text-gray-700"
-            required
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Name */}
+          <div className="form-control">
+            <label className="label opacity-60 font-bold text-xs uppercase">Full Name</label>
+            <div className="flex items-center gap-3 bg-base-100 border border-base-300 rounded-xl px-4 py-1 focus-within:border-primary transition-all">
+              <User className="text-primary w-5 h-5" />
+              <input
+                defaultValue={user?.displayName}
+                readOnly
+                type="text"
+                {...register("name")}
+                className="w-full bg-transparent outline-none py-3 text-base-content opacity-70 cursor-not-allowed"
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div className="form-control">
+            <label className="label opacity-60 font-bold text-xs uppercase">Email Address</label>
+            <div className="flex items-center gap-3 bg-base-100 border border-base-300 rounded-xl px-4 py-1 focus-within:border-primary transition-all">
+              <Mail className="text-primary w-5 h-5" />
+              <input
+                defaultValue={user?.email}
+                readOnly
+                type="email"
+                {...register("email")}
+                className="w-full bg-transparent outline-none py-3 text-base-content opacity-70 cursor-not-allowed"
+              />
+            </div>
+          </div>
+
+          {/* Phone */}
+          <div className="form-control">
+            <label className="label opacity-60 font-bold text-xs uppercase">Phone Number</label>
+            <div className="flex items-center gap-3 bg-base-100 border border-base-300 rounded-xl px-4 py-1 focus-within:border-primary transition-all">
+              <Phone className="text-primary w-5 h-5" />
+              <input
+                type="tel"
+                placeholder="017XX-XXXXXX"
+                {...register("phone")}
+                className="w-full bg-transparent outline-none py-3 text-base-content"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Age */}
+          <div className="form-control">
+            <label className="label opacity-60 font-bold text-xs uppercase">Your Age</label>
+            <div className="flex items-center gap-3 bg-base-100 border border-base-300 rounded-xl px-4 py-1 focus-within:border-primary transition-all">
+              <Hash className="text-primary w-5 h-5" />
+              <input
+                type="number"
+                placeholder="Enter age"
+                {...register("age")}
+                className="w-full bg-transparent outline-none py-3 text-base-content"
+                required
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Email */}
-        <div className="flex items-center gap-3 border-b border-gray-200 py-2">
-          <Mail className="text-primary w-5 h-5" />
-          <input
-            value={user.email}
-            readOnly
-            type="email"
-            placeholder="Email"
-            {...register("email")}
-            className="w-full outline-none px-2 py-2 text-gray-700"
-            required
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="flex items-center gap-3 border-b border-gray-200 py-2">
-          <Phone className="text-primary w-5 h-5" />
-          <input
-            type="tel"
-            placeholder="Phone"
-            {...register("phone")}
-            className="w-full outline-none px-2 py-2 text-gray-700"
-            required
-          />
-        </div>
-
-        {/* Age */}
-        <div className="flex items-center gap-3 border-b border-gray-200 py-2">
-          <User className="text-primary w-5 h-5" />
-          <input
-            type="number"
-            placeholder="Age"
-            {...register("age")}
-            className="w-full outline-none px-2 py-2 text-gray-700"
-            required
-          />
-        </div>
-
-        {/* Region */}
-        <div>
-          <label className="block text-sm mb-1 font-semibold">Select Region</label>
-          <select
-            defaultValue=""
-            className="select bg-base-200 w-full"
-            {...register("region")}
-            required
-          >
-            <option value="" disabled>
-              Select Region
-            </option>
-            {regions.map((r, i) => (
-              <option key={i} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* District */}
-        <div>
-          <label className="block text-sm mb-1 font-semibold">Select District</label>
-          <select
-            defaultValue=""
-            className="select bg-base-200 w-full"
-            {...register("district")}
-            required
-          >
-            <option value="" disabled>
-              Select District
-            </option>
-            {selectedRegion &&
-              districtsByRegion(selectedRegion).map((d, i) => (
-                <option key={i} value={d}>
-                  {d}
-                </option>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          {/* Region */}
+          <div className="form-control">
+            <label className="label opacity-60 font-bold text-xs uppercase">Work Region</label>
+            <select
+              defaultValue=""
+              className="select select-bordered bg-base-100 w-full focus:select-primary rounded-xl h-[52px]"
+              {...register("region")}
+              required
+            >
+              <option value="" disabled>Select Region</option>
+              {regions.map((r, i) => (
+                <option key={i} value={r}>{r}</option>
               ))}
-          </select>
+            </select>
+          </div>
+
+          {/* District */}
+          <div className="form-control">
+            <label className="label opacity-60 font-bold text-xs uppercase">Work District</label>
+            <select
+              defaultValue=""
+              disabled={!selectedRegion}
+              className="select select-bordered bg-base-100 w-full focus:select-primary rounded-xl h-[52px] disabled:bg-base-300"
+              {...register("district")}
+              required
+            >
+              <option value="" disabled>Select District</option>
+              {selectedRegion &&
+                districtsByRegion(selectedRegion).map((d, i) => (
+                  <option key={i} value={d}>{d}</option>
+                ))}
+            </select>
+          </div>
         </div>
 
         {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition"
-        >
-          Submit Application
-        </button>
+        <div className="pt-4">
+          <button
+            type="submit"
+            className="btn btn-primary w-full text-white font-bold text-lg rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.01] active:scale-95 transition-all"
+          >
+            Submit Application
+          </button>
+        </div>
       </form>
     </div>
   );
