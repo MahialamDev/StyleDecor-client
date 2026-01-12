@@ -15,11 +15,12 @@ const Home = () => {
             <BuildBase />
             <Coverage /> 
             <TopDecorators />
-            <ContactPage />
+           
             <MyContainer>
                 <HowItWorks />
                 <FeatureSection />
             </MyContainer>
+             <ContactPage />
         </>
     );
 };

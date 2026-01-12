@@ -32,6 +32,8 @@ import DecoratorRoute from './DecoratorRoute';
 import PaymentsHistory from '../Pages/Dashboard/PaymentsHistory/PaymentsHistory';
 import PaymentCancelled from '../Pages/Dashboard/Payments/PaymentCancelled';
 import Privacy from '../Pages/Privacy/Privacy';
+import HelpCenter from '../Pages/Help/Help';
+
 
 
 
@@ -76,6 +78,11 @@ const router = createBrowserRouter([
                 path: 'privacy',
                 Component: Privacy
             },
+            {
+                path: 'help',
+                Component: HelpCenter
+            }
+            
            
         ]
     },

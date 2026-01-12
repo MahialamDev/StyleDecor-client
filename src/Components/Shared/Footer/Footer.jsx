@@ -51,8 +51,8 @@ const Footer = () => {
                         <div className="flex flex-col gap-4 text-xs font-bold uppercase tracking-widest">
                             <Link to="/" className="transition-all hover:text-primary hover:translate-x-1 inline-block">Home</Link>
                             <Link to="/services" className="transition-all hover:text-primary hover:translate-x-1 inline-block">Services</Link>
-                            <Link to="/cart" className="transition-all hover:text-primary hover:translate-x-1 inline-block">My Cart</Link>
-                            <Link to="/profile" className="transition-all hover:text-primary hover:translate-x-1 inline-block">Profile</Link>
+                            <Link to="/dashboard/my-bookings" className="transition-all hover:text-primary hover:translate-x-1 inline-block">My Cart</Link>
+                            <Link to="/dashboard/my-profile" className="transition-all hover:text-primary hover:translate-x-1 inline-block">Profile</Link>
                         </div>
                     </div>
 
@@ -62,9 +62,9 @@ const Footer = () => {
                             <span className="w-6 h-[2px] bg-primary"></span> Support
                         </h1>
                         <div className="flex flex-col gap-4 text-xs font-bold uppercase tracking-widest">
-                            <Link className="transition-all hover:text-primary hover:translate-x-1 inline-block">Help Center (FAQ)</Link>
+                            <Link to={'/help'} className="transition-all hover:text-primary hover:translate-x-1 inline-block">Help Center (FAQ)</Link>
                             <Link className="transition-all hover:text-primary hover:translate-x-1 inline-block">Contact Support</Link>
-                            <Link to='' className="transition-all hover:text-primary hover:translate-x-1 inline-block">Privacy Policy</Link>
+                            <Link to='/privacy' className="transition-all hover:text-primary hover:translate-x-1 inline-block">Privacy Policy</Link>
                             <Link className="transition-all hover:text-primary hover:translate-x-1 inline-block">Terms of Service</Link>
                         </div>
                     </div>

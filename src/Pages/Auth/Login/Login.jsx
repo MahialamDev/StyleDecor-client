@@ -10,6 +10,9 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // Added setValue here to control form inputs programmatically
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+
     const handleLoginWithEmail = (data) => {
         loginWithEmailPass(data.email, data.password)
             .then(() => {
@@ -20,7 +23,11 @@ const Login = () => {
             })
     }
 
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    // Function to handle the auto-fill
+    const handleDemoFill = (email, pass) => {
+        setValue('email', email);
+        setValue('password', pass);
+    };
 
     useEffect(() => {
         if (user) {
@@ -29,7 +36,25 @@ const Login = () => {
     }, [user, navigate, location]);
 
     return (
-        <div className='mb-5 pb-5 md:pb-0 md:m-0 text-base-content'>
+        <div className='mb-5 pb-5 md:pb-0 md:m-0 text-base-content relative'>
+            
+            {/* Demo Credential UI - Matches your requested style */}
+            <div className='text-primary border border-primary/40 bg-base-100 p-3 absolute -top-20 right-0 md:-right-20 md:-top-16 rounded-lg shadow-sm text-xs z-10'>
+                <p className='font-bold mb-1 border-b border-primary/20'>Demo Credentials (Click)</p>
+                <div 
+                    onClick={() => handleDemoFill('admin@gmail.com', 'Admin1234@')} 
+                    className='cursor-pointer hover:underline mb-1'
+                >
+                    Admin: admin@gmail.com
+                </div>
+                <div 
+                    onClick={() => handleDemoFill('user@gmail.com', 'Rahat1234@')} 
+                    className='cursor-pointer hover:underline'
+                >
+                    User: user@gmail.com
+                </div>
+            </div>
+
             <div className='space-y-2 text-center'>
                 <h1 className='text-2xl md:text-4xl font-semibold'>Welcome Back</h1>
                 <p className='opacity-70'>Please Login</p>

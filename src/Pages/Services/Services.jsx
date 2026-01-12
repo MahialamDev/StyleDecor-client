@@ -29,10 +29,20 @@ const Services = () => {
         <MySection className="bg-base-100 text-base-content transition-colors duration-300">
             <MyContainer>
                 <div className='-mt-5'>
-                    <div className="text-center">
-                        <h1 className='text-4xl font-black'>Our <span className="text-primary">Services</span></h1>
-                        <span className='block h-1 mx-auto w-12 bg-secondary mt-3 rounded-full'></span>
-                    </div>
+                   <div className="text-center mb-12">
+    {/* Small accent label matching the rest of the site */}
+    <div className="flex items-center justify-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-3">
+        Premium Solutions
+    </div>
+    
+    {/* Main Title: font-black, uppercase, italic, tracking-tighter */}
+    <h1 className='text-4xl md:text-5xl font-black text-base-content uppercase italic tracking-tighter'>
+        Our <span className="text-primary">Services</span>
+    </h1>
+    
+    {/* Industrial Underline */}
+    <span className='block h-1.5 mx-auto w-20 bg-primary mt-4 rounded-full'></span>
+</div>
 
                     {/* Search & Sort Wrapper */}
                     <div className="mt-10 p-6 bg-base-200 border border-base-300 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-5">

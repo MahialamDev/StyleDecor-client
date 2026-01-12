@@ -4,6 +4,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { Settings2, UserCheck, Calendar, MapPin, Mail, CreditCard } from "lucide-react";
+import ScreenLoading from "../../../Components/Animation/ScreenLoading/ScreenLoading";
 
 // Updated colors for dark mode compatibility
 const statusColors = {
@@ -18,7 +19,7 @@ const ManageBookings = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [sort, setSort] = useState("");
 
-  const { data: bookings = [], refetch: decRefetch } = useQuery({
+  const { data: bookings = [], refetch: decRefetch, isLoading } = useQuery({
     queryKey: ["bookings", sort],
     queryFn: async () => {
       const res = await axiosSecure.get(`/bookings?sort=${sort}`);
@@ -55,6 +56,10 @@ const ManageBookings = () => {
         decRefetch();
       });
   };
+
+  if (isLoading) {
+    return <ScreenLoading />
+  }
 
   return (
     <div className="p-4 md:p-6 min-h-screen">

@@ -7,6 +7,7 @@ import useAuth from '../Hooks/useAuth';
 import useRole from '../Hooks/useRole';
 import ScreenLoading from '../Components/Animation/ScreenLoading/ScreenLoading';
 import { useTheme } from 'next-themes';
+import Logo from '../Components/UI/Logo/Logo';
 
 const DashboardLayout2 = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -120,7 +121,7 @@ const DashboardLayout2 = () => {
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex bg-base-100 border-r border-base-300 flex-col w-64 transition-colors duration-300">
         <div className="flex items-center justify-between p-6 border-b border-base-300">
-          <h1 className="font-black text-2xl tracking-tight text-primary">SMART<span className='text-secondary'>DECOR</span></h1>
+          <Logo />
         </div>
         <ul className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
           <MenuItems />
@@ -150,7 +151,7 @@ const DashboardLayout2 = () => {
             <button className="lg:hidden btn btn-ghost btn-circle bg-base-200" onClick={() => setSidebarOpen(true)}>
               <Menu size={22} />
             </button>
-            <h2 className="lg:hidden font-bold text-lg text-primary tracking-tighter">SMART DECOR</h2>
+            <h2 className=" font-bold text-lg text-primary tracking-tighter">Dashboard</h2>
           </div>
           
           <div className='flex items-center gap-3 md:gap-6'>
