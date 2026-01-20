@@ -30,7 +30,7 @@ const MyProfile = () => {
   }
 
   return (
-    <section className="w-full p-4 h-full bg-base-100 text-base-content">
+    <section className="w-full md:p-4 h-full bg-base-100 text-base-content ">
       {/* Heading */}
       <div className="flex flex-wrap gap-3 items-center justify-between pb-3 border-b border-base-300">
         <h1 className="text-xl md:text-2xl font-semibold">Client Profile</h1>

@@ -1,97 +1,170 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import { motion } from "framer-motion";
-import { CiSearch } from "react-icons/ci";
-import { useNavigate } from "react-router";
+import React from 'react';
+import MyContainer from '../../../Layouts/MyContainer';
+import { ArrowRight, CheckCircle2, Layout, Zap } from 'lucide-react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+// import required modules
+import { Autoplay, Pagination } from 'swiper/modules';
 
 import banner1img from "../../../assets/banner-1.webp";
 import banner2img from "../../../assets/banner-2.webp";
 import banner3img from "../../../assets/banner-3.webp";
 
-import "swiper/css";
-import "swiper/css/pagination";
+const images = [banner1img, banner2img, banner3img]
+
 
 const Hero = () => {
-  const navigate = useNavigate();
-  const banners = [banner1img, banner2img, banner3img];
-
   return (
-    // bg-base-100 dark theme switch hole auto dark background nibe
-    <section className="w-full md:px-6 max-w-7xl mx-auto min-h-[90vh] overflow-x-hidden flex flex-col justify-center bg-base-100">
-      
-      <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20 h-full py-10 md:py-0">
+    <section className="bg-base-100 py-8 md:py-16 lg:py-28 overflow-hidden">
+      <MyContainer>
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ">
+          
+          {/* Left Content */}
+          <div className="flex-1 order-2 lg:order-1 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-lg mb-6">
+              <Zap size={16} className="text-primary fill-primary" />
+              <span className="text-xs font-black uppercase tracking-widest text-primary">
+                Interior Excellence
+              </span>
+            </div>
+
+            <h1 className="text-4xl md:text-6xl font-black text-base-content uppercase tracking-tighter leading-none mb-6">
+              Modern Spaces <br />
+              For <span className="text-primary">Better Living</span>
+            </h1>
+
+            <p className="text-base-content/70 text-lg md:text-xl max-w-xl mb-10 font-medium leading-relaxed">
+              Transform your house into a masterpiece with our top-rated interior decorators. 
+              Simple, functional, and aesthetically pleasing designs tailored for you.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <button className="btn btn-primary btn-lg rounded-xl px-10 font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20">
+                Start Planning
+              </button>
+              <button className="btn btn-outline border-2 btn-lg rounded-xl px-8 font-black uppercase tracking-widest text-sm">
+                Our Gallery
+              </button>
+            </div>
+
+            {/* Quick Benefits */}
+            <div className="mt-12 flex flex-wrap justify-center lg:justify-start gap-6">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-primary" />
+                <span className="text-sm font-bold uppercase tracking-tight">Expert Team</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-primary" />
+                <span className="text-sm font-bold uppercase tracking-tight">Fast Delivery</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-primary" />
+                <span className="text-sm font-bold uppercase tracking-tight">Best Pricing</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content: Clean Modern Image Grid */}
+          <div className="flex-1 order-1 lg:order-2 w-full">
+            <div className="relative">
+              {/* Main Decorative Background */}
+              <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] -z-10 rotate-3"></div>
+              
+              {/* Image Placeholder Frame */}
+<div className="relative aspect-[4/3] w-full bg-base-200 border-2 border-base-300 rounded-[2.5rem] overflow-hidden shadow-2xl">
+  
+  {/* Background Pattern/Gradient (Ata thakbe jate image load hote deri holeo baje na lage) */}
+  <div className="absolute inset-0 bg-gradient-to-br from-base-300 to-base-100 flex items-center justify-center">
+                  {/* Ekhane div soriye direct img tag use kora hoyeche */}
+                  
+                  <Swiper
+        pagination={{
+          dynamicBullets: true,
+                    }}
+                    autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+                    }}
+                    
+                    loop={true}
+        modules={[Pagination, Autoplay]}
+        className="mySwiper w-full h-full"
+      >
+                    {images.map((image, i)=> <SwiperSlide key={i}>
+                       <img 
+      src={image} 
+      alt="Banner" 
+      className="w-full h-full object-cover" 
+    />
+        </SwiperSlide>)}
+      </Swiper>
+   
+  </div>
+
+  {/* Overlapping Info Tag */}
+  <div className="absolute top-8 left-8 bg-base-100/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-base-300 shadow-sm z-10">
+    <div className="flex items-center gap-3">
+      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+      <span className="text-xs font-black uppercase tracking-widest text-base-content">
+        Active Projects
+      </span>
+    </div>
+  </div>
+</div>
+
+              {/* Action Button Overlay */}
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary rounded-full flex items-center justify-center border-8 border-base-100 shadow-xl cursor-pointer hover:scale-110 transition-transform duration-300 z-10">
+                <ArrowRight size={32} className="text-primary-content" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
         
-        {/* Left Side Content */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          // text-base-content bebohar korle dark/light auto thik hobe
-          className="flex-1 max-w-lg space-y-6 text-base-content p-4"
-        >
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-snug">
-            Interior Design <span className="block text-primary">Solution</span>
-          </h1>
+     {/* Add Something Div -> Trusted Stats/Brands Bar */}
+<div className="mt-16 h-24 w-full border-y border-base-300 flex items-center justify-around bg-base-100/50 backdrop-blur-sm px-4 overflow-x-auto no-scrollbar">
+  
+  {/* Stat 1 */}
+  <div className="flex flex-col items-center min-w-[120px]">
+    <span className="text-2xl font-black text-primary tracking-tighter">12K+</span>
+    <span className="text-[10px] font-bold uppercase opacity-50 tracking-[0.2em]">Dream Homes</span>
+  </div>
 
-          <p className="opacity-80 text-lg font-medium">
-            Elevate your home with modern and elegant interior designs. Tailored
-            solutions for every space, combining style, comfort, and functionality.
-          </p>
+  {/* Divider */}
+  <div className="h-8 w-[1px] bg-base-300 hidden md:block"></div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4">
-            <button
-              onClick={() => navigate("/services")}
-              className="btn btn-primary text-white" 
-            >
-              Book Decoration Service
-            </button>
-            
-            {/* Outline button automatic primary/secondary color theme onujayi change hobe */}
-            <button className="btn btn-outline btn-secondary flex items-center gap-2">
-              <CiSearch size={18} /> Explore
-            </button>
-          </div>
+  {/* Stat 2 */}
+  <div className="flex flex-col items-center min-w-[120px]">
+    <span className="text-2xl font-black text-base-content tracking-tighter">4.9/5</span>
+    <span className="text-[10px] font-bold uppercase opacity-50 tracking-[0.2em]">Client Rating</span>
+  </div>
 
-          {/* Decorative lines */}
-          <div className="flex gap-3 mt-6">
-            <div className="w-10 h-1 bg-primary rounded-full"></div>
-            <div className="w-6 h-1 bg-base-300 rounded-full"></div>
-            <div className="w-4 h-1 bg-base-200 rounded-full"></div>
-          </div>
-        </motion.div>
+  {/* Divider */}
+  <div className="h-8 w-[1px] bg-base-300 hidden md:block"></div>
 
-        {/* Right Side Swiper */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex-1 w-full md:max-w-xl h-[350px] md:h-[450px] overflow-hidden md:rounded-2xl shadow-2xl"
-        >
-          <Swiper
-            loop
-            autoplay={{ delay: 3500, disableOnInteraction: false }}
-            pagination={{ dynamicBullets: true, clickable: true }}
-            modules={[Pagination, Autoplay]}
-            className="w-full h-full"
-          >
-            {banners.map((banner, i) => (
-              <SwiperSlide key={i}>
-                <div className="w-full h-full relative">
-                   <img
-                    src={banner}
-                    alt={`banner-${i + 1}`}
-                    className="w-full h-full object-cover md:rounded-2xl"
-                  />
-                  {/* Dark overlay for better look in dark mode (Optional) */}
-                  <div className="absolute inset-0 bg-black/5 dark:bg-black/20 md:rounded-2xl transition-all"></div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </motion.div>
+  {/* Stat 3 */}
+  <div className="flex flex-col items-center min-w-[120px]">
+    <span className="text-2xl font-black text-base-content tracking-tighter">15+</span>
+    <span className="text-[10px] font-bold uppercase opacity-50 tracking-[0.2em]">Awards Won</span>
+  </div>
 
-      </div>
+  {/* Divider */}
+  <div className="h-8 w-[1px] bg-base-300 hidden md:block"></div>
+
+  {/* Stat 4 */}
+  <div className="flex flex-col items-center min-w-[120px]">
+    <span className="text-2xl font-black text-base-content tracking-tighter">100%</span>
+    <span className="text-[10px] font-bold uppercase opacity-50 tracking-[0.2em]">Handpicked Experts</span>
+  </div>
+
+</div>
+      </MyContainer>
+
     </section>
   );
 };

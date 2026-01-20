@@ -181,8 +181,8 @@ const DashboardLayout2 = () => {
         </nav>
 
         {/* Dynamic Page Content */}
-        <main className="flex-1 p-3 md:p-6 overflow-auto bg-base-200">
-          <div className="bg-base-100 rounded-[2.5rem] shadow-sm min-h-full p-4 md:p-10 border border-base-300">
+        <main className="flex-1 overflow-auto bg-base-200">
+          <div className="bg-base-100 min-h-full p-4 md:p-10 border border-base-300">
             <Outlet />
           </div>
         </main>

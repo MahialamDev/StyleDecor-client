@@ -41,3 +41,7 @@
   --color-warning: #FBBD23;
   --color-error: #F87272;
 }
+
+body{
+  overflow-x: hidden;
+}
