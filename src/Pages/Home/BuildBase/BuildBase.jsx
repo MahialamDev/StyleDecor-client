@@ -45,7 +45,7 @@ const BuildBase = () => {
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
                     {builds.map((build, i) => (
                         <div 
-                            className='group space-y-5 bg-base-100 border-2 border-base-300 p-5 rounded-[2.5rem] hover:border-primary transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5' 
+                            className='group space-y-5 bg-base-100 border-2 border-base-300 rounded-[2.5rem] hover:border-primary transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5' 
                             key={i}
                         > 
                             {/* Image Container */}

@@ -28,7 +28,7 @@ const ErrorPage = () => {
         {/* Go Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 px-5 py-2 rounded-lg border-2 border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-300 cursor-pointer"
+          className="flex items-center gap-2 px-5 py-2 rounded-lg border-2 border-base-400 text-secondary hover:bg-secondary hover:text-white transition-all duration-300 cursor-pointer"
         >
           <ArrowLeft size={18} />
           Go Back

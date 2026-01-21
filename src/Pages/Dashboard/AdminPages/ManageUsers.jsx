@@ -113,7 +113,7 @@ const ManageUsers = () => {
               <div className="flex items-center gap-4">
                 <div className="avatar">
                   <div className="w-16 h-16 rounded-[1.5rem] ring-2 ring-base-300 ring-offset-base-100 ring-offset-4 group-hover:ring-primary transition-all">
-                    <img src={user.photoURL || "/default-avatar.png"} alt="profile" />
+                    <img src={user.photoURL || "/default-avatar.png"} alt="profile" referrerPolicy="no-referrer" />
                   </div>
                 </div>
                 <div>

@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 const ManageServices = () => {
   const axiosSecure = useAxiosSecure();
-
+  
   const { data: services = [], isLoading, refetch } = useQuery({
     queryKey: ['services'],
     queryFn: async () => {
@@ -47,7 +47,7 @@ const ManageServices = () => {
   if (isLoading) return <ScreenLoading />;
 
   return (
-    <div className="p-4 md:p-6 min-h-screen bg-transparent">
+    <div className=" md:p-6 min-h-screen bg-transparent">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 border-b border-base-300 pb-6">
         <div>
@@ -75,7 +75,7 @@ const ManageServices = () => {
         {services.map((service) => (
           <div
             key={service._id}
-            className="group relative bg-base-100 border border-base-300 rounded-[2rem] overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 flex flex-col h-full"
+            className="group relative bg-base-100 border border-primary/80 rounded-[2rem] overflow-hidden hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 flex flex-col h-full"
           >
             {/* Image Wrapper */}
             <div className="relative h-52 overflow-hidden">

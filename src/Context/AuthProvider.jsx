@@ -48,7 +48,11 @@ const AuthProvider = ({ children }) => {
         return () => {
             unSubscribe();
         }
-    },[])
+    }, [])
+    
+
+      const [order, setOrder] = useState("");
+      const [searchText, setSearchText] = useState("");
 
 
     const authInfo = {
@@ -61,7 +65,11 @@ const AuthProvider = ({ children }) => {
         updateUserProfile,
         setError,
         setLoading,
-        logOutUser
+        logOutUser,
+        order,
+        setOrder,
+        searchText,
+        setSearchText
     }
 
 

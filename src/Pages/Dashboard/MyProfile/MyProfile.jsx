@@ -78,7 +78,7 @@ const MyProfile = () => {
         </div>
 
         {/* Right Cards */}
-        <div className="w-full p-2">
+        <div className="w-full md:p-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
 
             <div className="bg-base-200 border border-base-300 p-6 rounded-2xl shadow space-y-2">

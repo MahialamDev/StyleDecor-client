@@ -62,7 +62,7 @@ const ManageBookings = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 min-h-screen">
+    <div className=" md:p-6 min-h-screen">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-base-300 pb-6">
         <div>

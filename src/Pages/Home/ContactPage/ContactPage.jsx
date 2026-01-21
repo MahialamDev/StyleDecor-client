@@ -63,7 +63,7 @@ const ContactPage = () => {
         {/* Contact Form */}
         <form 
           onSubmit={handleSubmit} 
-          className='flex flex-col gap-5 bg-base-100 p-10 rounded-[2.5rem] border-2 border-base-300 h-full shadow-sm'
+          className='flex flex-col gap-5 bg-base-100 p-4 md:p-10 rounded-[2.5rem] border-2 border-base-300 h-full shadow-sm'
         >
           <div className='flex flex-col gap-2 flex-1'>
             <label className='text-[10px] font-black uppercase tracking-[0.2em] opacity-50 ml-1'>Full Name</label>

@@ -73,7 +73,7 @@ const ManageDecorators = () => {
 
   return (
     // Changed bg-slate-100 to bg-base-200
-    <div className="p-6  min-h-screen">
+    <div className="md:p-6  min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-12 text-base-content">
         Decorator Management
         <span className="ml-2 text-primary">({decorators.length})</span>
@@ -84,7 +84,7 @@ const ManageDecorators = () => {
           <div
             key={decorator._id}
             // Changed bg-white to bg-base-100 and border color
-            className="relative bg-base-100 border border-base-300 rounded-3xl shadow-lg hover:shadow-2xl transition"
+            className="relative bg-base-100 border border-base-300 rounded-3xl shadow-lg hover:shadow-2xl transition "
           >
             {/* Status Ribbon */}
             <div

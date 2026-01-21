@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
@@ -15,6 +15,7 @@ const EditService = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const { register, handleSubmit, reset, watch } = useForm();
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   // useQuery to load service data
   const { data: service, isLoading } = useQuery({
@@ -37,16 +38,17 @@ const EditService = () => {
 
   // Handle Update
   const onSubmit = async (updatedData) => {
+    setUpdateLoading(true);
+    
     try {
       await axiosSecure.patch(`/services/${id}/edit`, updatedData)
         .then(res => {
           if (res.data.modifiedCount) {
+            setUpdateLoading(false);
             Swal.fire({
               title: "Updated!",
               text: "Your service has been updated.",
               icon: "success",
-              background: 'var(--fallback-b1,oklch(var(--b1)))',
-              color: 'var(--fallback-bc,oklch(var(--bc)))',
             });
             navigate('/dashboard/manage-services');
           }
@@ -79,7 +81,7 @@ const EditService = () => {
       {/* Form Card */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-base-100 p-6 rounded-xl "
+        className="space-y-4 bg-base-100 md:p-6 rounded-xl "
       >
 
         {/* Service Name */}
@@ -181,12 +183,17 @@ const EditService = () => {
         </div>
 
         {/* Submit */}
-        <button
+        {updateLoading ? <p className="cursor-pointer w-full btn text-white transition-all mt-4 font-bold uppercase tracking-wide"> <span className="loading loading-spinner text-primary"></span> </p> :
+        
+          <button
           type="submit"
           className="cursor-pointer w-full btn btn-primary text-white transition-all mt-4 font-bold uppercase tracking-wide"
         >
           Update Service
         </button>
+          
+        }
+        
 
       </form>
     </div>

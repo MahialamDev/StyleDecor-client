@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import useAxiosInstance from '../../Hooks/useAxiosInstance';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
@@ -16,6 +16,7 @@ const BookService = () => {
   const navigate = useNavigate();
   const axiosInstance = useAxiosInstance();
   const axiosSecure = useAxiosSecure();
+  const [confirmLoading, setConfirmLoading] = useState(false)
 
   const { data: service = {}, isLoading: serviceLoading } = useQuery({
     queryKey: ['service', id],
@@ -47,7 +48,8 @@ const BookService = () => {
 
   if (serviceLoading || centersLoading) return <ScreenLoading />;
 
-  const handleBookNow = (data) => {
+  const handleBookNow = async (data) => {
+   setConfirmLoading(true);
     const bookingInfo = {
       client_name: user.name || user.displayName,
       client_email: user.email,
@@ -65,7 +67,10 @@ const BookService = () => {
     axiosSecure
       .post('/bookings', bookingInfo)
       .then((res) => {
-        navigate('/dashboard/my-bookings');
+        if (res) {
+            setConfirmLoading(false)
+           navigate('/dashboard/my-bookings');
+        }
       })
       .catch(err => console.log(err));
   };
@@ -188,12 +193,15 @@ const BookService = () => {
 
             {/* Submit Button */}
             <div className="md:col-span-2 mt-4">
-              <button
+              {confirmLoading ? <p className="btn btn-primary w-full text-white font-bold text-lg rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Loading...</p> : 
+              
+                <button
                 type="submit"
                 className="btn btn-primary w-full text-white font-bold text-lg rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
               >
                 Confirm Booking Now
               </button>
+              }
             </div>
           </form>
         </div>

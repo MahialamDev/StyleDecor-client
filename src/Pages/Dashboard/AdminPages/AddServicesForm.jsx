@@ -51,7 +51,7 @@ const AddServiceForm = () => {
       </h1>
 
       {/* Card: Changed bg-white to bg-base-100 and border-gray-200 to border-base-300 */}
-      <div className="bg-base-100 p-6 rounded-xl  ">
+      <div className="bg-base-100 md:p-6 rounded-xl  ">
         <form onSubmit={handleSubmit(submitHandler)} className="space-y-4">
 
           {/* Service Name */}
