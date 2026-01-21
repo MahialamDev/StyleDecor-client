@@ -11,7 +11,7 @@ const Footer = () => {
     const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
-        <footer className='border-t-2 border-base-300 bg-base-100 text-base-content/70'>
+        <footer className='border-t-2 border-base-300 bg-base-100 text-base-content/70 w-full overflow-x-hidden'>
             {/* Top Footer Content */}
             <div className='px-4 md:px-6 max-w-7xl mx-auto py-20'>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8'>

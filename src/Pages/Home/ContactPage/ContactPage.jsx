@@ -25,7 +25,7 @@ const ContactPage = () => {
       
       {/* Header Updated to match Feature Section Style */}
       <div className='text-center mb-16'>
-        <h1 className='text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase italic'>
+        <h1 className='text-4xl md:text-5xl font-bold mb-4 tracking-tighter uppercase '>
           Get in <span className='text-primary'>Touch</span>
         </h1>
         <p className='text-base-content/60 max-w-2xl mx-auto font-medium'>

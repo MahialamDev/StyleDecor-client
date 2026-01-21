@@ -32,7 +32,7 @@ const TopDecorators = () => {
             <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-2">
               <Trophy size={14} /> Expert Team
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-base-content uppercase italic tracking-tighter">
+            <h2 className="text-4xl md:text-5xl font-bold text-base-content uppercase tracking-tighter">
               Our Top <span className="text-primary">Decorators</span>
             </h2>
           </div>

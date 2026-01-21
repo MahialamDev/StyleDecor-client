@@ -10,7 +10,7 @@ import FeatureSection from './Feature.jsx/Feature';
 
 const Home = () => {
     return (
-        <>
+        <div className='overflow-x-hidden'>
             <Hero />
             <BuildBase />
             <Coverage /> 
@@ -21,7 +21,7 @@ const Home = () => {
                 <FeatureSection />
             </MyContainer>
              <ContactPage />
-        </>
+        </div>
     );
 };
 

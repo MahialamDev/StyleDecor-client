@@ -34,7 +34,7 @@ const BuildBase = () => {
                     <div className="flex items-center justify-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-3">
                         <Layers size={14} /> Step by Step
                     </div>
-                    <h1 className='text-4xl md:text-5xl font-black text-base-content uppercase italic tracking-tighter'>
+                    <h1 className='text-4xl md:text-5xl font-bold text-base-content uppercase tracking-tighter'>
                         Build Your <span className='text-primary'>Base</span>
                     </h1>
                     <div className='mt-4 flex justify-center'>

@@ -2,12 +2,28 @@ import React, { useRef } from "react";
 import { CiSearch } from "react-icons/ci";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import useAxiosInstance from "../../../Hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import MySection from "../../../Layouts/MySection";
 import MyContainer from "../../../Layouts/MyContainer";
 import { useTheme } from "next-themes";
 import { MapPin } from "lucide-react";
+
+/* =========================
+   LEAFLET ICON FIX (DEPLOY SAFE)
+========================= */
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const Coverage = () => {
   const position = [23.685, 90.3563]; // Center of Bangladesh
@@ -32,14 +48,18 @@ const Coverage = () => {
       c.district.toLowerCase().includes(location.toLowerCase())
     );
 
-    if (district) {
-      const coords = [district.latitude, district.longitude];
-      mapRef.current.flyTo(coords, 12);
+    if (district && mapRef.current) {
+      mapRef.current.flyTo(
+        [district.latitude, district.longitude],
+        12
+      );
     }
   };
 
-  const darkMapUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-  const lightMapUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  const darkMapUrl =
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  const lightMapUrl =
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
   return (
     <MySection className="py-20 bg-transparent transition-colors duration-300">
@@ -49,11 +69,12 @@ const Coverage = () => {
           <div className="flex items-center justify-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-3">
             <MapPin size={14} /> Global Presence
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-base-content uppercase italic tracking-tighter">
+          <h1 className="text-4xl md:text-5xl font-bold text-base-content uppercase tracking-tighter">
             Our Service <span className="text-primary">Coverage</span>
           </h1>
           <p className="text-base-content/60 max-w-2xl mx-auto font-medium mt-4 px-4">
-            Discover our presence across Bangladesh. Search for your district to find our nearest service hubs and expert decorators.
+            Discover our presence across Bangladesh. Search for your district to
+            find our nearest service hubs and expert decorators.
           </p>
         </div>
 
@@ -83,36 +104,40 @@ const Coverage = () => {
 
         {/* Map Section */}
         {!isLoading && serviceCenters.length > 0 && (
-          <div className="relative z-0 border-2 border-base-300 rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-500 hover:border-primary/40 p-2 bg-base-100">
+          <div className="relative z-0 border-2 border-base-300 rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:border-primary/40 p-2 bg-base-100 ">
             <div className="rounded-[2rem] overflow-hidden">
-                <MapContainer
-                  center={position}
-                  zoom={7}
-                  scrollWheelZoom={false}
-                  ref={mapRef}
-                  className="w-full h-[450px] sm:h-[650px]"
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
-                    url={theme === "dark" ? darkMapUrl : lightMapUrl}
-                  />
-                  {serviceCenters.map((center) => (
-                    <Marker key={center._id} position={[center.latitude, center.longitude]}>
-                      <Popup>
-                        <div className="p-2 min-w-[150px]">
-                          <h2 className="font-black text-primary uppercase text-sm italic tracking-tighter">
-                            {center.district} Hub
-                          </h2>
-                          <div className="h-[1px] w-full bg-base-300 my-2"></div>
-                          <p className="text-xs font-bold opacity-60 uppercase leading-relaxed">
-                            <span className="text-primary/70">Covers:</span><br />
-                            {center.covered_area.join(", ")}
-                          </p>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  ))}
-                </MapContainer>
+              <MapContainer
+                center={position}
+                zoom={7}
+                scrollWheelZoom={false}
+                whenCreated={(map) => (mapRef.current = map)}
+                className="w-full h-[450px] sm:h-[650px]"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://carto.com/">CartoDB</a>'
+                  url={theme === "dark" ? darkMapUrl : lightMapUrl}
+                />
+                {serviceCenters.map((center) => (
+                  <Marker
+                    key={center._id}
+                    position={[center.latitude, center.longitude]}
+                  >
+                    <Popup>
+                      <div className="p-2 min-w-[150px]">
+                        <h2 className="font-black text-primary uppercase text-sm italic tracking-tighter">
+                          {center.district} Hub
+                        </h2>
+                        <div className="h-[1px] w-full bg-base-300 my-2"></div>
+                        <p className="text-xs font-bold opacity-60 uppercase leading-relaxed">
+                          <span className="text-primary/70">Covers:</span>
+                          <br />
+                          {center.covered_area.join(", ")}
+                        </p>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
             </div>
           </div>
         )}
@@ -120,16 +145,18 @@ const Coverage = () => {
         {/* Loading & Empty States */}
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
-             <span className="loading loading-spinner loading-lg text-primary"></span>
-             <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 italic">Decrypting Coordinates</p>
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 italic">
+              Decrypting Coordinates
+            </p>
           </div>
         )}
 
         {!isLoading && serviceCenters.length === 0 && (
           <div className="text-center py-20 bg-base-100 rounded-[2.5rem] border-2 border-dashed border-base-300">
-             <p className="text-base-content/40 text-xs font-black uppercase tracking-widest">
-               No service centers detected in current sector.
-             </p>
+            <p className="text-base-content/40 text-xs font-black uppercase tracking-widest">
+              No service centers detected in current sector.
+            </p>
           </div>
         )}
       </MyContainer>

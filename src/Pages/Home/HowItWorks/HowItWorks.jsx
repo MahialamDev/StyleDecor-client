@@ -33,7 +33,7 @@ const HowItWorks = () => {
     <div className="py-20 px-4">
       {/* Heading */}
       <div className="text-center mb-20">
-        <h1 className="text-4xl md:text-5xl font-black text-base-content mb-4 tracking-tighter uppercase italic">
+        <h1 className="text-4xl md:text-5xl font-bold text-base-content mb-4 tracking-tighter uppercase">
           How It <span className="text-primary">Works</span>
         </h1>
         <p className="text-base-content/60 max-w-2xl mx-auto font-medium">

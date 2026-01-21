@@ -13,6 +13,7 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import banner1img from "../../../assets/banner-1.webp";
 import banner2img from "../../../assets/banner-2.webp";
 import banner3img from "../../../assets/banner-3.webp";
+import { Link } from 'react-router';
 
 const images = [banner1img, banner2img, banner3img]
 
@@ -44,7 +45,7 @@ const Hero = () => {
 
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button className="btn btn-primary btn-lg rounded-xl px-10 font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20">
-                Start Planning
+                <Link to='/services'>Start Planning</Link>
               </button>
               <button className="btn btn-outline border-2 btn-lg rounded-xl px-8 font-black uppercase tracking-widest text-sm">
                 Our Gallery

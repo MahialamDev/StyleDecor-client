@@ -19,7 +19,7 @@ const About = () => {
           <div className="flex items-center justify-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-3">
             <Info size={14} /> Our Story
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-base-content uppercase italic tracking-tighter">
+          <h1 className="text-4xl md:text-5xl font-bold text-base-content uppercase tracking-tighter">
             About <span className="text-primary">Style Decor</span>
           </h1>
           <div className="mt-4 flex justify-center">
@@ -45,7 +45,7 @@ const About = () => {
           </div>
 
           <div className="lg:w-1/2 space-y-6">
-            <h2 className="text-3xl font-black text-base-content uppercase italic tracking-tight">
+            <h2 className="text-3xl font-black text-base-content uppercase tracking-tight">
               Who <span className="text-primary">We Are</span>
             </h2>
             <p className="text-base-content/70 font-medium leading-relaxed text-lg">

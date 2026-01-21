@@ -33,7 +33,7 @@ const FeatureSection = () => {
     <div className="py-20 px-4 bg-transparent">
       {/* Heading */}
       <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-black text-base-content mb-4 tracking-tighter uppercase italic">
+        <h2 className="text-4xl md:text-5xl font-bold text-base-content mb-4 tracking-tighter uppercase ">
           Why Choose <span className="text-primary">StyleDecor</span>
         </h2>
         <p className="text-base-content/60 max-w-2xl mx-auto font-medium">
